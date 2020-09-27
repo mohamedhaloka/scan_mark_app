@@ -1,11 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:scan_mark_app/services/auth.dart';
+import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/sign_in/view.dart';
 import 'package:scan_mark_app/widgets/custom_filled_button.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:scan_mark_app/widgets/custom_text_field.dart';
-
+import 'package:path/path.dart' as Path;
+import 'dart:io';
 import '../../const.dart';
 
 class SignUpView extends StatefulWidget {
@@ -16,7 +22,7 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
-  String email, pass;
+  String email, pass, name;
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool loading = false;
@@ -49,33 +55,11 @@ class _SignUpViewState extends State<SignUpView> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {},
-                                child: CircleAvatar(
-                                  radius: 28,
-                                  backgroundColor: kPrimaryColor,
-                                  child: Icon(
-                                    Icons.photo,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              flex: 1,
-                            ),
-                            CustomSizedBox(heiNum: 0.0, wedNum: 0.01),
-                            Expanded(
-                              child: CustomTextField(
-                                hint: "Name",
-                                onChange: (val) {
-                                  email = val;
-                                },
-                              ),
-                              flex: 3,
-                            )
-                          ],
+                        CustomTextField(
+                          hint: "Name",
+                          onChange: (val) {
+                            email = val;
+                          },
                         ),
                         CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
                         CustomTextField(
@@ -102,7 +86,7 @@ class _SignUpViewState extends State<SignUpView> {
                         builder: (context) => FilledButton(
                             tittle: "Sign Up",
                             onPress: () {
-                              _signIn(context);
+                              _signUp(context);
                             },
                             buttonColor: kPrimaryColor)),
                 CustomSizedBox(heiNum: 0.052, wedNum: 0.0),
@@ -136,10 +120,13 @@ class _SignUpViewState extends State<SignUpView> {
     );
   }
 
-  _signIn(context) async {
+  _signUp(context) async {
     try {
       if (_formKey.currentState.validate()) {
-        await Auth().signUpWithEmailAndPassword(email, pass);
+
+        Auth().signUpWithEmailAndPassword(email, pass);
+
+
         print("done create account");
         setState(() {
           loading = true;
@@ -153,3 +140,48 @@ class _SignUpViewState extends State<SignUpView> {
     });
   }
 }
+
+// @override
+// void initState() {
+//   super.initState();
+//   getCurrentUser();
+// }
+//
+// User loggedInUser;
+// File _image;
+// String imgURL;
+//
+// void getCurrentUser() {
+//   try {
+//     final user = FirebaseAuth.instance.currentUser;
+//     if (user != null) {
+//       loggedInUser = user;
+//     }
+//   } catch (e) {
+//     print(e);
+//   }
+// }
+//
+// Future uploadFile() async {
+//   try {
+//     await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
+//       setState(() {
+//         _image = image;
+//       });
+//     });
+//     print("step 1");
+//     StorageReference storageReference = FirebaseStorage.instance.ref().child(
+//         '${loggedInUser.uid}/UserProfille/${Path.basename(_image.path)}');
+//     StorageUploadTask uploadTask = storageReference.putFile(_image);
+//     await uploadTask.onComplete;
+//     print('File Uploaded');
+//     storageReference.getDownloadURL().then((fileURL) {
+//       setState(() {
+//         imgURL = fileURL;
+//       });
+//     });
+//     print("done upload");
+//   } catch (e) {
+//     print('bego erorr $e');
+//   }
+// }
