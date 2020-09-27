@@ -49,11 +49,33 @@ class _SignUpViewState extends State<SignUpView> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        CustomTextField(
-                          hint: "Name",
-                          onChange: (val) {
-                            email = val;
-                          },
+                        Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {},
+                                child: CircleAvatar(
+                                  radius: 28,
+                                  backgroundColor: kPrimaryColor,
+                                  child: Icon(
+                                    Icons.photo,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              flex: 1,
+                            ),
+                            CustomSizedBox(heiNum: 0.0, wedNum: 0.01),
+                            Expanded(
+                              child: CustomTextField(
+                                hint: "Name",
+                                onChange: (val) {
+                                  email = val;
+                                },
+                              ),
+                              flex: 3,
+                            )
+                          ],
                         ),
                         CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
                         CustomTextField(
@@ -78,7 +100,7 @@ class _SignUpViewState extends State<SignUpView> {
                       )
                     : Builder(
                         builder: (context) => FilledButton(
-                            tittle: "Sign In",
+                            tittle: "Sign Up",
                             onPress: () {
                               _signIn(context);
                             },
@@ -89,7 +111,7 @@ class _SignUpViewState extends State<SignUpView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Don't have an account?",
+                      "You have an account?",
                       style: TextStyle(fontSize: 16),
                     ),
                     CustomSizedBox(heiNum: 0.0, wedNum: 0.02),

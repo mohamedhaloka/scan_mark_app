@@ -12,6 +12,8 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   errorMessage(hint) {
     switch (hint) {
+      case "Name":
+        return "Required Name*";
       case "E-Mail":
         return "Required E-Mail*";
       case "Password":
