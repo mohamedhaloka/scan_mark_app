@@ -1,17 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
+import 'package:scan_mark_app/provider/userData.dart';
 import 'package:scan_mark_app/services/auth.dart';
-import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/sign_in/view.dart';
+import 'package:scan_mark_app/views/sign_up/complete.dart';
 import 'package:scan_mark_app/widgets/custom_filled_button.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:scan_mark_app/widgets/custom_text_field.dart';
-import 'package:path/path.dart' as Path;
-import 'dart:io';
 import '../../const.dart';
 
 class SignUpView extends StatefulWidget {
@@ -22,13 +18,12 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
-  String email, pass, name;
-
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool loading = false;
 
   @override
   Widget build(BuildContext context) {
+    var userData = Provider.of<UserData>(context, listen: false);
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -58,21 +53,21 @@ class _SignUpViewState extends State<SignUpView> {
                         CustomTextField(
                           hint: "Name",
                           onChange: (val) {
-                            email = val;
+                            userData.changeNameVal(val);
                           },
                         ),
                         CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
                         CustomTextField(
                           hint: "E-Mail",
                           onChange: (val) {
-                            email = val;
+                            userData.changeEmailVal(val);
                           },
                         ),
                         CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
                         CustomTextField(
                           hint: "Password",
                           onChange: (val) {
-                            pass = val;
+                            userData.changePassVal(val);
                           },
                         ),
                       ],
@@ -121,16 +116,15 @@ class _SignUpViewState extends State<SignUpView> {
   }
 
   _signUp(context) async {
+    var userData = Provider.of<UserData>(context, listen: false);
     try {
+      setState(() {
+        loading = true;
+      });
       if (_formKey.currentState.validate()) {
-
-        Auth().signUpWithEmailAndPassword(email, pass);
-
-
-        print("done create account");
-        setState(() {
-          loading = true;
-        });
+        Auth().signUpWithEmailAndPassword(userData.email, userData.pass);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => CompleteSignUp()));
       }
     } catch (e) {
       Scaffold.of(context).showSnackBar(SnackBar(content: Text(e.message)));
@@ -140,48 +134,3 @@ class _SignUpViewState extends State<SignUpView> {
     });
   }
 }
-
-// @override
-// void initState() {
-//   super.initState();
-//   getCurrentUser();
-// }
-//
-// User loggedInUser;
-// File _image;
-// String imgURL;
-//
-// void getCurrentUser() {
-//   try {
-//     final user = FirebaseAuth.instance.currentUser;
-//     if (user != null) {
-//       loggedInUser = user;
-//     }
-//   } catch (e) {
-//     print(e);
-//   }
-// }
-//
-// Future uploadFile() async {
-//   try {
-//     await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
-//       setState(() {
-//         _image = image;
-//       });
-//     });
-//     print("step 1");
-//     StorageReference storageReference = FirebaseStorage.instance.ref().child(
-//         '${loggedInUser.uid}/UserProfille/${Path.basename(_image.path)}');
-//     StorageUploadTask uploadTask = storageReference.putFile(_image);
-//     await uploadTask.onComplete;
-//     print('File Uploaded');
-//     storageReference.getDownloadURL().then((fileURL) {
-//       setState(() {
-//         imgURL = fileURL;
-//       });
-//     });
-//     print("done upload");
-//   } catch (e) {
-//     print('bego erorr $e');
-//   }
-// }

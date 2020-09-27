@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scan_mark_app/views/bottom_tab/home/products_list.dart';
 import 'package:scan_mark_app/views/product_details/product_details.dart';
 
 import '../../const.dart';

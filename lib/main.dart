@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
+import 'package:scan_mark_app/provider/userData.dart';
 import 'package:scan_mark_app/views/about/view.dart';
 import 'package:scan_mark_app/views/bottom_tab/view.dart';
 import 'package:scan_mark_app/views/product_details/view.dart';
 import 'package:scan_mark_app/views/search/view.dart';
 import 'package:scan_mark_app/views/sign_in/view.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:scan_mark_app/views/sign_up/view.dart';
 
 void main() async {
@@ -22,7 +22,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => ChangeIndex())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserData()),
+        ChangeNotifierProvider(create: (context) => ChangeIndex())
+      ],
       child: MaterialApp(
         title: 'Scan Market',
         debugShowCheckedModeBanner: false,

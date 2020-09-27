@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scan_mark_app/const.dart';
 
+// ignore: must_be_immutable
 class CustomSizedBox extends StatelessWidget {
   CustomSizedBox({@required this.heiNum, @required this.wedNum});
   double heiNum;

@@ -3,7 +3,6 @@ import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/views/bottom_tab/home/products_list.dart';
 import 'package:scan_mark_app/views/bottom_tab/home/search.dart';
 
-import '../bottom_app_bar.dart';
 
 class HomeView extends StatelessWidget {
   @override
