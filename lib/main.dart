@@ -6,6 +6,7 @@ import 'package:scan_mark_app/views/about/view.dart';
 import 'package:scan_mark_app/views/bottom_tab/view.dart';
 import 'package:scan_mark_app/views/product_details/view.dart';
 import 'package:scan_mark_app/views/search/view.dart';
+import 'package:scan_mark_app/views/sign_in/view.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,11 +28,12 @@ class MyApp extends StatelessWidget {
             fontFamily: "Cairo"),
         routes: {
           BottomTabView.id: (context) => BottomTabView(),
+          SignInView.id: (context) => SignInView(),
           ProductDetailsView.id: (context) => ProductDetailsView(),
           AboutView.id: (context) => AboutView(),
           SearchView.id: (context) => SearchView(),
         },
-        initialRoute: BottomTabView.id,
+        initialRoute: SignInView.id,
       ),
     );
   }
