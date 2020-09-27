@@ -1,20 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/services/auth.dart';
-import 'package:scan_mark_app/views/sign_up/view.dart';
+import 'package:scan_mark_app/views/sign_in/view.dart';
 import 'package:scan_mark_app/widgets/custom_filled_button.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:scan_mark_app/widgets/custom_text_field.dart';
 
-class SignInView extends StatefulWidget {
-  static String id = "Sign In View";
+import '../../const.dart';
+
+class SignUpView extends StatefulWidget {
+  static String id = "Sign Up View";
 
   @override
-  _SignInViewState createState() => _SignInViewState();
+  _SignUpViewState createState() => _SignUpViewState();
 }
 
-class _SignInViewState extends State<SignInView> {
+class _SignUpViewState extends State<SignUpView> {
   String email, pass;
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -24,7 +25,7 @@ class _SignInViewState extends State<SignInView> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+          color: Colors.white,
           image: DecorationImage(
               image: ExactAssetImage("assets/img/sign-in/bg.jpg"),
               fit: BoxFit.cover)),
@@ -40,7 +41,7 @@ class _SignInViewState extends State<SignInView> {
                 Image.asset("assets/img/logo.png"),
                 CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
                 Text(
-                  "Hello, Sign In Your Account.",
+                  "Create Account, Enter Your Information Below.",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 CustomSizedBox(heiNum: 0.08, wedNum: 0.0),
@@ -48,6 +49,13 @@ class _SignInViewState extends State<SignInView> {
                     key: _formKey,
                     child: Column(
                       children: [
+                        CustomTextField(
+                          hint: "Name",
+                          onChange: (val) {
+                            email = val;
+                          },
+                        ),
+                        CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
                         CustomTextField(
                           hint: "E-Mail",
                           onChange: (val) {
@@ -90,10 +98,10 @@ class _SignInViewState extends State<SignInView> {
                           Navigator.pushReplacement(
                               context,
                               CupertinoPageRoute(
-                                  builder: (context) => SignUpView()));
+                                  builder: (context) => SignInView()));
                         },
                         child: Text(
-                          "Sign Up",
+                          "Sign In",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         )),
                   ],
@@ -109,8 +117,8 @@ class _SignInViewState extends State<SignInView> {
   _signIn(context) async {
     try {
       if (_formKey.currentState.validate()) {
-        await Auth().signInWithEmailAndPassword(email, pass);
-        print("done");
+        await Auth().signUpWithEmailAndPassword(email, pass);
+        print("done create account");
         setState(() {
           loading = true;
         });

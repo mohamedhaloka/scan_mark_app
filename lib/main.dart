@@ -9,10 +9,11 @@ import 'package:scan_mark_app/views/product_details/view.dart';
 import 'package:scan_mark_app/views/search/view.dart';
 import 'package:scan_mark_app/views/sign_in/view.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:scan_mark_app/views/sign_up/view.dart';
 
-void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         routes: {
           BottomTabView.id: (context) => BottomTabView(),
           SignInView.id: (context) => SignInView(),
+          SignUpView.id: (context) => SignUpView(),
           ProductDetailsView.id: (context) => ProductDetailsView(),
           AboutView.id: (context) => AboutView(),
           SearchView.id: (context) => SearchView(),
