@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:scan_mark_app/const.dart';
+import 'package:scan_mark_app/services/auth.dart';
 import 'package:scan_mark_app/widgets/custom_filled_button.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:scan_mark_app/widgets/custom_text_field.dart';
 
-class SignInView extends StatelessWidget {
+class SignInView extends StatefulWidget {
   static String id = "Sign In View";
+
+  @override
+  _SignInViewState createState() => _SignInViewState();
+}
+
+class _SignInViewState extends State<SignInView> {
+  String email, pass;
+
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool loading = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,18 +36,61 @@ class SignInView extends StatelessWidget {
               children: [
                 Image.asset("assets/img/logo.png"),
                 CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
-                Text("Hello, Sign In Your Account.",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                Text(
+                  "Hello, Sign In Your Account.",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
                 CustomSizedBox(heiNum: 0.08, wedNum: 0.0),
-                CustomTextField(hint: "E-Mail",onChange: (val){},),
-                CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
-                CustomTextField(hint: "Password",onChange: (val){},),
+                Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        CustomTextField(
+                          hint: "E-Mail",
+                          onChange: (val) {
+                            email = val;
+                          },
+                        ),
+                        CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
+                        CustomTextField(
+                          hint: "Password",
+                          onChange: (val) {
+                            pass = val;
+                          },
+                        ),
+                      ],
+                    )),
                 CustomSizedBox(heiNum: 0.052, wedNum: 0.0),
-                FilledButton(tittle: "Sign In", onPress: (){}, buttonColor: kPrimaryColor)
+                loading
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Builder(
+                        builder: (context) => FilledButton(
+                            tittle: "Sign In",
+                            onPress: () {
+                              _signIn();
+                            },
+                            buttonColor: kPrimaryColor))
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  _signIn() async {
+    try {
+      if (_formKey.currentState.validate()) {
+        await Auth().signInWithEmailAndPassword(email, pass);
+        setState(() {
+          loading = true;
+        });
+      }
+    } catch (e) {
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+    }
+
   }
 }
