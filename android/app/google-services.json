@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1034536225240",
+    "firebase_url": "https://scan-market.firebaseio.com",
+    "project_id": "scan-market",
+    "storage_bucket": "scan-market.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034536225240:android:f8cd9266acd4e6591e4aad",
+        "android_client_info": {
+          "package_name": "com.scanmark.scan_mark_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1034536225240-ogq27dfbigjuf1iojdc665oc6ipgaut3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-Y9kN6tYhAupnc7x8LMMkZud1Xci9Cb0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1034536225240-ogq27dfbigjuf1iojdc665oc6ipgaut3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
