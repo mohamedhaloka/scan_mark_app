@@ -29,7 +29,7 @@ class _CartListState extends State<CartList> {
           if (snapshot.hasData) {
             return LayoutBuilder(builder: (context, constrant) {
               if (snapshot.data.length == 0) {
-                return Center(child: Text("No Data"));
+                return Center(child: Image.asset("assets/img/empty-cart.png"));
               }
               return AnimationLimiter(
                 child: ListView.builder(
