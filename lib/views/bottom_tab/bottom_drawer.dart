@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scan_mark_app/services/auth.dart';
 import 'package:scan_mark_app/views/about/view.dart';
 import 'package:scan_mark_app/views/sign_in/view.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
@@ -88,13 +89,16 @@ class BottomDrawer extends StatelessWidget {
           ? () {
               Navigator.pop(context);
             }
-          : () {
-              tittle == "Log out"
-                  ? Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => SignInView()))
-                  : Navigator.pop(context);
-              Navigator.pushNamed(context, routeName);
-            },
+          : tittle == "Log out"
+              ? () {
+                  Auth().signOut();
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => SignInView()));
+                }
+              : () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, routeName);
+                },
     );
   }
 }

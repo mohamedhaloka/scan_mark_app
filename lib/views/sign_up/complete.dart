@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,10 +28,12 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
   String imgURL;
   bool loading = false;
   bool loadingPhoto = false;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getCurrentUser();
   }
 
   void getCurrentUser() async {
@@ -181,12 +184,16 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
     var userData = Provider.of<UserData>(context, listen: false);
     try {
       if (_formKey.currentState.validate()) {
-        Store().storeUserInfo({
-          kUserName: userData.name,
-          kUserPassword: userData.pass,
-          kUserEmail: userData.email,
-          kUserPhoto: imgURL
-        });
+        Response response;
+        Dio dio = new Dio();
+        response = await dio.patch(
+            "https://scan-market.firebaseio.com/${userData.pass}.json",
+            data: {
+              kUserName: userData.name,
+              kUserPassword: userData.pass,
+              kUserEmail: userData.email,
+              kUserPhoto: imgURL.toString(),
+            });
         print("done create account");
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();

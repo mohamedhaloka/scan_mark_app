@@ -131,8 +131,6 @@ class _SignUpViewState extends State<SignUpView> {
         setState(() {
           loading = true;
         });
-        print(userData.email);
-        print(userData.pass);
         Auth().signUpWithEmailAndPassword(userData.email, userData.pass);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => CompleteSignUp()));

@@ -23,7 +23,7 @@ class _BottomTabViewState extends State<BottomTabView> {
     BottomIndicatorNavigationBarItem(icon: Icons.shopping_cart),
   ];
 
-  String photo,name;
+  String photo, name;
   SharedPreferences preferences;
   getUserData() async {
     preferences = await SharedPreferences.getInstance();
@@ -63,7 +63,10 @@ class _BottomTabViewState extends State<BottomTabView> {
     getUserData();
     return Scaffold(
       key: _scaffold,
-      drawer: BottomDrawer(name: name,photo: photo,),
+      drawer: BottomDrawer(
+        name: name,
+        photo: photo,
+      ),
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: kPrimaryColor,
@@ -75,7 +78,7 @@ class _BottomTabViewState extends State<BottomTabView> {
             height: 30,
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.red,
+                color: kPrimaryColor,
                 image: DecorationImage(
                     image: NetworkImage(photo == null
                         ? "https://firebasestorage.googleapis.com/v0/b/scan-market.appspot.com/o/Jx4ATDi52BNaGHuTehxW2zMgt4C2%2FUserProfille%2Fimage_picker2771216902201923755.jpg?alt=media&token=b31dce1d-6b03-475f-a16e-8f897aac2ae2"

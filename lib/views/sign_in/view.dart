@@ -1,11 +1,18 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
+import 'package:scan_mark_app/provider/userData.dart';
 import 'package:scan_mark_app/services/auth.dart';
+import 'package:scan_mark_app/views/sign_in/modal.dart';
 import 'package:scan_mark_app/views/sign_up/view.dart';
 import 'package:scan_mark_app/widgets/custom_filled_button.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:scan_mark_app/widgets/custom_text_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInView extends StatefulWidget {
   static String id = "Sign In View";
@@ -15,16 +22,15 @@ class SignInView extends StatefulWidget {
 }
 
 class _SignInViewState extends State<SignInView> {
-  String email, pass;
-
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool loading = false;
 
   @override
   Widget build(BuildContext context) {
+    var userData = Provider.of<UserData>(context, listen: false);
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+          color: Colors.white,
           image: DecorationImage(
               image: ExactAssetImage("assets/img/sign-in/bg.jpg"),
               fit: BoxFit.cover)),
@@ -51,14 +57,18 @@ class _SignInViewState extends State<SignInView> {
                         CustomTextField(
                           hint: "E-Mail",
                           onChange: (val) {
-                            email = val;
+                            setState(() {
+                              userData.changeEmailVal(val);
+                            });
                           },
                         ),
                         CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
                         CustomTextField(
                           hint: "Password",
                           onChange: (val) {
-                            pass = val;
+                            setState(() {
+                              userData.changePassVal(val);
+                            });
                           },
                         ),
                       ],
@@ -107,9 +117,11 @@ class _SignInViewState extends State<SignInView> {
   }
 
   _signIn(context) async {
+    var userData = Provider.of<UserData>(context, listen: false);
+
     try {
       if (_formKey.currentState.validate()) {
-        await Auth().signInWithEmailAndPassword(email, pass);
+        await Auth().signInWithEmailAndPassword(userData.email, userData.pass);
         print("done");
         setState(() {
           loading = true;

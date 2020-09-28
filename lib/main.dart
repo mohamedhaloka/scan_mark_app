@@ -23,7 +23,7 @@ void main() async {
   String _screen;
 
   if (seen == false || seen == null) {
-    _screen = SignUpView.id;
+    _screen = SignInView.id;
   } else {
     _screen = BottomTabView.id;
   }
