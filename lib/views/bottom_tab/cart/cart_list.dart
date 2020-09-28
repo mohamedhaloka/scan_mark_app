@@ -74,8 +74,7 @@ class _CartListState extends State<CartList> {
                                     "${snapshot.data[index]['photo']}",
                                     width: 100,
                                   ),
-                                  CustomSizedBox(
-                                      heiNum: 0.0, wedNum: 0.04),
+                                  CustomSizedBox(heiNum: 0.0, wedNum: 0.04),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
@@ -83,7 +82,6 @@ class _CartListState extends State<CartList> {
                                       children: [
                                         drawPriceDetails("Price",
                                             "${snapshot.data[index]['priceDetails']}"),
-
                                         drawPriceDetails("Average Price",
                                             "${snapshot.data[index]['averagePriceDetails']}"),
                                       ],
