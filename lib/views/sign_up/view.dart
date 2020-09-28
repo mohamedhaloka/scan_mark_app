@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
+import 'package:scan_mark_app/provider/progress_statue.dart';
 import 'package:scan_mark_app/provider/userData.dart';
 import 'package:scan_mark_app/services/auth.dart';
 import 'package:scan_mark_app/views/sign_in/view.dart';
@@ -24,99 +26,103 @@ class _SignUpViewState extends State<SignUpView> {
   @override
   Widget build(BuildContext context) {
     var userData = Provider.of<UserData>(context, listen: false);
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          image: DecorationImage(
-              image: ExactAssetImage("assets/img/sign-in/bg.jpg"),
-              fit: BoxFit.cover)),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(left: 62, right: 62, top: 180, bottom: 32),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset("assets/img/logo.png"),
-                CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
-                Text(
-                  "Create Account, Enter Your Information Below.",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                CustomSizedBox(heiNum: 0.08, wedNum: 0.0),
-                Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        CustomTextField(
-                          hint: "Name",
-                          onChange: (val) {
-                            setState(() {
-                              userData.changeNameVal(val);
-                              print(userData.name);
-                            });
-                          },
-                        ),
-                        CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
-                        CustomTextField(
-                          hint: "E-Mail",
-                          onChange: (val) {
-                            setState(() {
-                              userData.changeEmailVal(val);
-                              print(userData.email);
-                            });
-                          },
-                        ),
-                        CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
-                        CustomTextField(
-                          hint: "Password",
-                          onChange: (val) {
-                            setState(() {
-                              userData.changePassVal(val);
-                              print(userData.pass);
-                            });
-                          },
-                        ),
-                      ],
-                    )),
-                CustomSizedBox(heiNum: 0.052, wedNum: 0.0),
-                loading
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : Builder(
-                        builder: (context) => FilledButton(
-                            tittle: "Sign Up",
-                            onPress: () {
-                              _signUp(context);
+    return ModalProgressHUD(
+      inAsyncCall: Provider.of<ProgressStatue>(context).progress,
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            image: DecorationImage(
+                image: ExactAssetImage("assets/img/sign-in/bg.jpg"),
+                fit: BoxFit.cover)),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SingleChildScrollView(
+            child: Padding(
+              padding:
+                  EdgeInsets.only(left: 62, right: 62, top: 180, bottom: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("assets/img/logo.png"),
+                  CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
+                  Text(
+                    "Create Account, Enter Your Information Below.",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  CustomSizedBox(heiNum: 0.08, wedNum: 0.0),
+                  Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          CustomTextField(
+                            hint: "Name",
+                            onChange: (val) {
+                              setState(() {
+                                userData.changeNameVal(val);
+                                print(userData.name);
+                              });
                             },
-                            buttonColor: kPrimaryColor)),
-                CustomSizedBox(heiNum: 0.052, wedNum: 0.0),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "You have an account?",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    CustomSizedBox(heiNum: 0.0, wedNum: 0.02),
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => SignInView()));
-                        },
-                        child: Text(
-                          "Sign In",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )),
-                  ],
-                )
-              ],
+                          ),
+                          CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
+                          CustomTextField(
+                            hint: "E-Mail",
+                            onChange: (val) {
+                              setState(() {
+                                userData.changeEmailVal(val);
+                                print(userData.email);
+                              });
+                            },
+                          ),
+                          CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
+                          CustomTextField(
+                            hint: "Password",
+                            onChange: (val) {
+                              setState(() {
+                                userData.changePassVal(val);
+                                print(userData.pass);
+                              });
+                            },
+                          ),
+                        ],
+                      )),
+                  CustomSizedBox(heiNum: 0.052, wedNum: 0.0),
+                  loading
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Builder(
+                          builder: (context) => FilledButton(
+                              tittle: "Sign Up",
+                              onPress: () {
+                                _signUp(context);
+                              },
+                              buttonColor: kPrimaryColor)),
+                  CustomSizedBox(heiNum: 0.052, wedNum: 0.0),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "You have an account?",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      CustomSizedBox(heiNum: 0.0, wedNum: 0.02),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) => SignInView()));
+                          },
+                          child: Text(
+                            "Sign In",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -126,20 +132,22 @@ class _SignUpViewState extends State<SignUpView> {
 
   _signUp(context) async {
     var userData = Provider.of<UserData>(context, listen: false);
+    var progress = Provider.of<ProgressStatue>(context, listen: false);
     try {
       if (_formKey.currentState.validate()) {
-        setState(() {
-          loading = true;
-        });
+        progress.changeVal(true);
+
         Auth().signUpWithEmailAndPassword(userData.email, userData.pass);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => CompleteSignUp()));
+        progress.changeVal(false);
       }
     } catch (e) {
+      progress.changeVal(true);
+
       Scaffold.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+      progress.changeVal(false);
     }
-    setState(() {
-      loading = false;
-    });
+    progress.changeVal(false);
   }
 }

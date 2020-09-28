@@ -5,7 +5,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
+import 'package:scan_mark_app/provider/progress_statue.dart';
 import 'package:scan_mark_app/provider/userData.dart';
 import 'package:scan_mark_app/views/bottom_tab/view.dart';
 import 'package:scan_mark_app/widgets/custom_filled_button.dart';
@@ -86,92 +88,99 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
   @override
   Widget build(BuildContext context) {
     getCurrentUser();
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          image: DecorationImage(
-              image: ExactAssetImage("assets/img/sign-in/bg.jpg"),
-              fit: BoxFit.cover)),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(left: 62, right: 62, top: 180, bottom: 32),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset("assets/img/logo.png"),
-                CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
-                Text(
-                  "Customize Your Account, Enter Your Information Below.",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                CustomSizedBox(heiNum: 0.08, wedNum: 0.0),
-                GestureDetector(
-                  onTap: () {
-                    uploadFile();
-                  },
-                  child: Container(
-                    child: loadingPhoto
-                        ? Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : CachedNetworkImage(
-                            imageBuilder: (context, imageProvider) => Container(
-                                  width: MediaQuery.of(context).size.width * .4,
-                                  height:
-                                      MediaQuery.of(context).size.width * .3,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.cover),
-                                  ),
-                                ),
-                            placeholder: (context, url) => Container(
-                                  child: CircularProgressIndicator(
-                                      strokeWidth: 1.0,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          Color(0xFFff6768))),
-                                  width: 100.0,
-                                  height: 100.0,
-                                ),
-                            errorWidget: (context, url, error) =>
-                                Text(error.toString()),
-                            width: 300.0,
-                            height: 200.0,
-                            fit: BoxFit.cover,
-                            imageUrl: imgURL == null
-                                ? "https://firebasestorage.googleapis.com/v0/b/scan-market.appspot.com/o/Jx4ATDi52BNaGHuTehxW2zMgt4C2%2FUserProfille%2Fimage_picker2771216902201923755.jpg?alt=media&token=b31dce1d-6b03-475f-a16e-8f897aac2ae2"
-                                : imgURL.toString()),
+    return ModalProgressHUD(
+      inAsyncCall: Provider.of<ProgressStatue>(context).progress,
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            image: DecorationImage(
+                image: ExactAssetImage("assets/img/sign-in/bg.jpg"),
+                fit: BoxFit.cover)),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SingleChildScrollView(
+            child: Padding(
+              padding:
+                  EdgeInsets.only(left: 62, right: 62, top: 180, bottom: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("assets/img/logo.png"),
+                  CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
+                  Text(
+                    "Customize Your Account, Enter Your Information Below.",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
-                ),
-                CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
-                Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        CustomTextField(
-                          hint: "Phone Number",
-                          onChange: (val) {},
-                        ),
-                      ],
-                    )),
-                CustomSizedBox(heiNum: 0.052, wedNum: 0.0),
-                loading
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : Builder(
-                        builder: (context) => FilledButton(
-                            tittle: "Complete",
-                            onPress: () {
-                              _complete(context);
-                            },
-                            buttonColor: kPrimaryColor)),
-                CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
-              ],
+                  CustomSizedBox(heiNum: 0.08, wedNum: 0.0),
+                  GestureDetector(
+                    onTap: () {
+                      uploadFile();
+                    },
+                    child: Container(
+                      child: loadingPhoto
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : CachedNetworkImage(
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * .4,
+                                    height:
+                                        MediaQuery.of(context).size.width * .3,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover),
+                                    ),
+                                  ),
+                              placeholder: (context, url) => Container(
+                                    child: CircularProgressIndicator(
+                                        strokeWidth: 1.0,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Color(0xFFff6768))),
+                                    width: 100.0,
+                                    height: 100.0,
+                                  ),
+                              errorWidget: (context, url, error) =>
+                                  Text(error.toString()),
+                              width: 300.0,
+                              height: 200.0,
+                              fit: BoxFit.cover,
+                              imageUrl: imgURL == null
+                                  ? "https://firebasestorage.googleapis.com/v0/b/scan-market.appspot.com/o/Jx4ATDi52BNaGHuTehxW2zMgt4C2%2FUserProfille%2Fimage_picker2771216902201923755.jpg?alt=media&token=b31dce1d-6b03-475f-a16e-8f897aac2ae2"
+                                  : imgURL.toString()),
+                    ),
+                  ),
+                  CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
+                  Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          CustomTextField(
+                            hint: "Phone Number",
+                            onChange: (val) {},
+                          ),
+                        ],
+                      )),
+                  CustomSizedBox(heiNum: 0.052, wedNum: 0.0),
+                  loading
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Builder(
+                          builder: (context) => FilledButton(
+                              tittle: "Complete",
+                              onPress: () {
+                                _complete(context);
+                              },
+                              buttonColor: kPrimaryColor)),
+                  CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
+                ],
+              ),
             ),
           ),
         ),
@@ -181,8 +190,11 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
 
   _complete(context) async {
     var userData = Provider.of<UserData>(context, listen: false);
+    var progress = Provider.of<ProgressStatue>(context, listen: false);
     try {
       if (_formKey.currentState.validate()) {
+        progress.changeVal(true);
+
         Response response;
         Dio dio = new Dio();
         response = await dio.patch(
@@ -205,15 +217,14 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
         print(sharedPreferences.getKeys());
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => BottomTabView()));
+        progress.changeVal(false);
       }
     } catch (e) {
+      progress.changeVal(true);
+
       Scaffold.of(context).showSnackBar(SnackBar(content: Text(e.message)));
-      setState(() {
-        loading = false;
-      });
+      progress.changeVal(false);
     }
-    setState(() {
-      loading = false;
-    });
+    progress.changeVal(false);
   }
 }
