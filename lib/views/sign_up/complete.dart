@@ -27,6 +27,11 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
   String imgURL;
   bool loading = false;
   bool loadingPhoto = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   void getCurrentUser() async {
     try {
@@ -78,6 +83,7 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
 
   @override
   Widget build(BuildContext context) {
+    getCurrentUser();
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,

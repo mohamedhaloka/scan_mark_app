@@ -10,14 +10,33 @@ import 'package:scan_mark_app/views/product_details/view.dart';
 import 'package:scan_mark_app/views/search/view.dart';
 import 'package:scan_mark_app/views/sign_in/view.dart';
 import 'package:scan_mark_app/views/sign_up/view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+  bool seen = sharedPreferences.getBool("seen");
+
+  String _screen;
+
+  if (seen == false || seen == null) {
+    _screen = SignUpView.id;
+  } else {
+    _screen = BottomTabView.id;
+  }
+
+  runApp(MyApp(
+    screen: _screen,
+  ));
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({this.screen});
+
+  String screen;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -42,7 +61,7 @@ class MyApp extends StatelessWidget {
           AboutView.id: (context) => AboutView(),
           SearchView.id: (context) => SearchView(),
         },
-        initialRoute: SignInView.id,
+        initialRoute: screen,
       ),
     );
   }

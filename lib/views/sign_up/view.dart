@@ -53,21 +53,30 @@ class _SignUpViewState extends State<SignUpView> {
                         CustomTextField(
                           hint: "Name",
                           onChange: (val) {
-                            userData.changeNameVal(val);
+                            setState(() {
+                              userData.changeNameVal(val);
+                              print(userData.name);
+                            });
                           },
                         ),
                         CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
                         CustomTextField(
                           hint: "E-Mail",
                           onChange: (val) {
-                            userData.changeEmailVal(val);
+                            setState(() {
+                              userData.changeEmailVal(val);
+                              print(userData.email);
+                            });
                           },
                         ),
                         CustomSizedBox(heiNum: 0.055, wedNum: 0.0),
                         CustomTextField(
                           hint: "Password",
                           onChange: (val) {
-                            userData.changePassVal(val);
+                            setState(() {
+                              userData.changePassVal(val);
+                              print(userData.pass);
+                            });
                           },
                         ),
                       ],
@@ -122,6 +131,8 @@ class _SignUpViewState extends State<SignUpView> {
         setState(() {
           loading = true;
         });
+        print(userData.email);
+        print(userData.pass);
         Auth().signUpWithEmailAndPassword(userData.email, userData.pass);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => CompleteSignUp()));

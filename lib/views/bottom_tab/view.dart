@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
 import 'package:scan_mark_app/views/bottom_tab/bottom_drawer.dart';
 import 'package:scan_mark_app/views/search/view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../const.dart';
 import 'cart/view.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
@@ -21,6 +22,16 @@ class _BottomTabViewState extends State<BottomTabView> {
     BottomIndicatorNavigationBarItem(icon: Icons.home),
     BottomIndicatorNavigationBarItem(icon: Icons.shopping_cart),
   ];
+
+  String photo,name;
+  SharedPreferences preferences;
+  getUserData() async {
+    preferences = await SharedPreferences.getInstance();
+    setState(() {
+      name = preferences.getString("username") ?? "hhhhhhh";
+      photo = preferences.getString("userphoto");
+    });
+  }
 
   List<Widget> pageView = [HomeView(), CartView()];
 
@@ -49,9 +60,10 @@ class _BottomTabViewState extends State<BottomTabView> {
   @override
   Widget build(BuildContext context) {
     var checkIndex = Provider.of<ChangeIndex>(context).initialIndex;
+    getUserData();
     return Scaffold(
       key: _scaffold,
-      drawer: BottomDrawer(),
+      drawer: BottomDrawer(name: name,photo: photo,),
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: kPrimaryColor,
@@ -65,8 +77,9 @@ class _BottomTabViewState extends State<BottomTabView> {
                 shape: BoxShape.circle,
                 color: Colors.red,
                 image: DecorationImage(
-                    image: NetworkImage(
-                        "https://cdn.now.howstuffworks.com/media-content/0b7f4e9b-f59c-4024-9f06-b3dc12850ab7-1920-1080.jpg"),
+                    image: NetworkImage(photo == null
+                        ? "https://firebasestorage.googleapis.com/v0/b/scan-market.appspot.com/o/Jx4ATDi52BNaGHuTehxW2zMgt4C2%2FUserProfille%2Fimage_picker2771216902201923755.jpg?alt=media&token=b31dce1d-6b03-475f-a16e-8f897aac2ae2"
+                        : photo),
                     fit: BoxFit.cover)),
           ),
         ),

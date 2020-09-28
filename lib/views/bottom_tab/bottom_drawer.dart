@@ -4,29 +4,15 @@ import 'package:scan_mark_app/views/sign_in/view.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:shape_of_view/shape/diagonal.dart';
 import 'package:shape_of_view/shape_of_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../const.dart';
 
-class BottomDrawer extends StatefulWidget {
-  @override
-  _BottomDrawerState createState() => _BottomDrawerState();
-}
-
-class _BottomDrawerState extends State<BottomDrawer> {
-  String name, photo;
-  SharedPreferences preferences;
-  getUserData() async {
-    preferences = await SharedPreferences.getInstance();
-    setState(() {
-      name = preferences.getString("username") ?? "hhhhhhh";
-      photo = preferences.getString("userphoto");
-    });
-  }
-
+class BottomDrawer extends StatelessWidget {
+  BottomDrawer({@required this.name, @required this.photo});
+  String name;
+  String photo;
   @override
   Widget build(BuildContext context) {
-    getUserData();
     return Drawer(
       child: Column(
         children: [
@@ -38,11 +24,7 @@ class _BottomDrawerState extends State<BottomDrawer> {
                   direction: DiagonalDirection.Right,
                   angle: DiagonalAngle.deg(angle: 10)),
               child: Container(
-                padding: EdgeInsets.only(
-                  top: 40,
-                  left: 20,
-                  right: 30
-                ),
+                padding: EdgeInsets.only(top: 40, left: 20, right: 30),
                 color: kPrimaryColor,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +46,9 @@ class _BottomDrawerState extends State<BottomDrawer> {
                                 shape: BoxShape.circle,
                                 color: kPrimaryColor,
                                 image: DecorationImage(
-                                    image: NetworkImage(photo==null?"https://firebasestorage.googleapis.com/v0/b/scan-market.appspot.com/o/Jx4ATDi52BNaGHuTehxW2zMgt4C2%2FUserProfille%2Fimage_picker2771216902201923755.jpg?alt=media&token=b31dce1d-6b03-475f-a16e-8f897aac2ae2":photo),
+                                    image: NetworkImage(photo == null
+                                        ? "https://firebasestorage.googleapis.com/v0/b/scan-market.appspot.com/o/Jx4ATDi52BNaGHuTehxW2zMgt4C2%2FUserProfille%2Fimage_picker2771216902201923755.jpg?alt=media&token=b31dce1d-6b03-475f-a16e-8f897aac2ae2"
+                                        : photo),
                                     fit: BoxFit.cover)),
                           ),
                           CustomSizedBox(heiNum: 0.016, wedNum: 0.0),
