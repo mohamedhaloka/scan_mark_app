@@ -24,70 +24,17 @@ class CompleteSignUp extends StatefulWidget {
 }
 
 class _CompleteSignUpState extends State<CompleteSignUp> {
-  User loggedInUser;
-  File _image;
-  String imgURL;
   bool loading = false;
-  bool loadingPhoto = false;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getCurrentUser();
-  }
-
-  void getCurrentUser() async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        print(loggedInUser.email);
-        print(loggedInUser.uid);
-      }
-    } catch (e) {
-      print("error" + e);
-    }
-  }
-
-  Future uploadFile() async {
-    try {
-      await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
-        setState(() {
-          _image = image;
-        });
-      });
-      print("step 1");
-      setState(() {
-        loadingPhoto = true;
-      });
-      StorageReference storageReference = FirebaseStorage.instance.ref().child(
-          '${loggedInUser.uid}/UserProfille/${Path.basename(_image.path)}');
-      StorageUploadTask uploadTask = storageReference.putFile(_image);
-      await uploadTask.onComplete;
-      print('File Uploaded');
-      storageReference.getDownloadURL().then((fileURL) {
-        setState(() {
-          print(fileURL);
-          imgURL = fileURL;
-          print(imgURL.toString());
-        });
-      });
-      setState(() {
-        loadingPhoto = false;
-      });
-
-      print("done upload");
-    } catch (e) {
-      print('bego erorr $e');
-    }
-  }
+  String imgURL =
+      "https://thumbs.dreamstime.com/b/user-account-line-icon-outline-person-logo-illustration-linear-pictogram-isolated-white-90234649.jpg";
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    getCurrentUser();
+    var userData = Provider.of<UserData>(context, listen: false);
+
     return ModalProgressHUD(
       inAsyncCall: Provider.of<ProgressStatue>(context).progress,
       child: Container(
@@ -113,56 +60,28 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   CustomSizedBox(heiNum: 0.08, wedNum: 0.0),
-                  GestureDetector(
-                    onTap: () {
-                      uploadFile();
-                    },
-                    child: Container(
-                      child: loadingPhoto
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : CachedNetworkImage(
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * .4,
-                                    height:
-                                        MediaQuery.of(context).size.width * .3,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.cover),
-                                    ),
-                                  ),
-                              placeholder: (context, url) => Container(
-                                    child: CircularProgressIndicator(
-                                        strokeWidth: 1.0,
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                Color(0xFFff6768))),
-                                    width: 100.0,
-                                    height: 100.0,
-                                  ),
-                              errorWidget: (context, url, error) =>
-                                  Text(error.toString()),
-                              width: 300.0,
-                              height: 200.0,
-                              fit: BoxFit.cover,
-                              imageUrl: imgURL == null
-                                  ? "https://firebasestorage.googleapis.com/v0/b/scan-market.appspot.com/o/Jx4ATDi52BNaGHuTehxW2zMgt4C2%2FUserProfille%2Fimage_picker2771216902201923755.jpg?alt=media&token=b31dce1d-6b03-475f-a16e-8f897aac2ae2"
-                                  : imgURL.toString()),
-                    ),
-                  ),
-                  CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
                   Form(
                       key: _formKey,
                       child: Column(
                         children: [
                           CustomTextField(
                             hint: "Phone Number",
-                            onChange: (val) {},
+                            onChange: (val) {
+                              setState(() {
+                                userData.changePhoneVal(val);
+                                print(userData.phone);
+                              });
+                            },
+                          ),
+                          CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
+                          CustomTextField(
+                            hint: "Address",
+                            onChange: (val) {
+                              setState(() {
+                                userData.changeAddressVal(val);
+                                print(userData.address);
+                              });
+                            },
                           ),
                         ],
                       )),
@@ -202,14 +121,18 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
             data: {
               kUserName: userData.name,
               kUserPassword: userData.pass,
+              kUserPhone: userData.phone,
               kUserEmail: userData.email,
-              kUserPhoto: imgURL.toString(),
+              kUserAddress:userData.address,
+              kUserPhoto: imgURL,
             });
         print("done create account");
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
         sharedPreferences.setBool("seen", true);
         sharedPreferences.setString("username", userData.name);
+        sharedPreferences.setString("userphone", userData.phone);
+        sharedPreferences.setString("useraddress", userData.address);
         sharedPreferences.setString("userpass", userData.pass);
         sharedPreferences.setString("useremail", userData.email);
         sharedPreferences.setString("userphoto", imgURL);

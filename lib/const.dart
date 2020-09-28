@@ -8,8 +8,10 @@ const kPrimaryColor = Color(0xff0E0E0E);
 const String kUserCollection = "Users Collection";
 const String kUserName = "user name";
 const String kUserPhoto = "user photo";
+const String kUserPhone = "user phone";
 const String kUserEmail = "user email";
 const String kUserPassword = "user pass";
+const String kUserAddress = "user address";
 
 
 customHeight(context,heiNum)

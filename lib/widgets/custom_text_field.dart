@@ -21,6 +21,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
         return "Required Password*";
       case "Phone Number":
         return "Required Phone Number*";
+      case "Address":
+        return "Required Address*";
     }
   }
 

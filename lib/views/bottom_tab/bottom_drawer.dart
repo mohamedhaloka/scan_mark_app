@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:scan_mark_app/services/auth.dart';
 import 'package:scan_mark_app/views/about/view.dart';
+import 'package:scan_mark_app/views/setting/view.dart';
 import 'package:scan_mark_app/views/sign_in/view.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:shape_of_view/shape/diagonal.dart';
 import 'package:shape_of_view/shape_of_view.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../const.dart';
 
@@ -34,7 +34,10 @@ class BottomDrawer extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: Icon(Icons.settings),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, SettingView.id,arguments: photo);
+                      },
                       color: Colors.white,
                     ),
                     Padding(
