@@ -5,7 +5,8 @@ import 'package:scan_mark_app/views/sign_in/view.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:shape_of_view/shape/diagonal.dart';
 import 'package:shape_of_view/shape_of_view.dart';
-
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../const.dart';
 
 class BottomDrawer extends StatelessWidget {
@@ -90,8 +91,12 @@ class BottomDrawer extends StatelessWidget {
               Navigator.pop(context);
             }
           : tittle == "Log out"
-              ? () {
+              ? () async {
                   Auth().signOut();
+                  SharedPreferences sharedPreferences =
+                      await SharedPreferences.getInstance();
+                  sharedPreferences.setBool("seen", false);
+                  sharedPreferences.clear();
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => SignInView()));
                 }

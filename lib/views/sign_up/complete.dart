@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/provider/userData.dart';
-import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/bottom_tab/view.dart';
 import 'package:scan_mark_app/widgets/custom_filled_button.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';

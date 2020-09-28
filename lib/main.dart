@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
+import 'package:scan_mark_app/provider/progress_statue.dart';
 import 'package:scan_mark_app/provider/userData.dart';
 import 'package:scan_mark_app/views/about/view.dart';
 import 'package:scan_mark_app/views/bottom_tab/view.dart';
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserData()),
-        ChangeNotifierProvider(create: (context) => ChangeIndex())
+        ChangeNotifierProvider(create: (context) => ChangeIndex()),
+        ChangeNotifierProvider(create: (context) => ProgressStatue()),
       ],
       child: MaterialApp(
         title: 'Scan Market',
