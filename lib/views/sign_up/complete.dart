@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,14 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/provider/userData.dart';
-import 'package:scan_mark_app/services/auth.dart';
 import 'package:scan_mark_app/services/store.dart';
-import 'package:scan_mark_app/views/bottom_tab/home/view.dart';
 import 'package:scan_mark_app/views/bottom_tab/view.dart';
 import 'package:scan_mark_app/widgets/custom_filled_button.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:scan_mark_app/widgets/custom_text_field.dart';
 import 'package:path/path.dart' as Path;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import '../../const.dart';
 
@@ -25,21 +22,19 @@ class CompleteSignUp extends StatefulWidget {
 }
 
 class _CompleteSignUpState extends State<CompleteSignUp> {
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
-  }
-
   User loggedInUser;
   File _image;
   String imgURL;
+  bool loading = false;
+  bool loadingPhoto = false;
 
   void getCurrentUser() async {
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         loggedInUser = user;
+        print(loggedInUser.email);
+        print(loggedInUser.uid);
       }
     } catch (e) {
       print("error" + e);
@@ -54,6 +49,9 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
         });
       });
       print("step 1");
+      setState(() {
+        loadingPhoto = true;
+      });
       StorageReference storageReference = FirebaseStorage.instance.ref().child(
           '${loggedInUser.uid}/UserProfille/${Path.basename(_image.path)}');
       StorageUploadTask uploadTask = storageReference.putFile(_image);
@@ -66,6 +64,10 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
           print(imgURL.toString());
         });
       });
+      setState(() {
+        loadingPhoto = false;
+      });
+
       print("done upload");
     } catch (e) {
       print('bego erorr $e');
@@ -74,12 +76,8 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool loading = false;
-
   @override
   Widget build(BuildContext context) {
-    print(loggedInUser.uid);
-
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -107,32 +105,38 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
                     uploadFile();
                   },
                   child: Container(
-                    child: CachedNetworkImage(
-                        imageBuilder: (context, imageProvider) => Container(
-                              width: MediaQuery.of(context).size.width * .4,
-                              height: MediaQuery.of(context).size.width * .3,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    image: imageProvider, fit: BoxFit.cover),
-                              ),
-                            ),
-                        placeholder: (context, url) => Container(
-                              child: CircularProgressIndicator(
-                                  strokeWidth: 1.0,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Color(0xFFff6768))),
-                              width: 100.0,
-                              height: 100.0,
-                            ),
-                        errorWidget: (context, url, error) =>
-                            Text(error.toString()),
-                        width: 300.0,
-                        height: 200.0,
-                        fit: BoxFit.cover,
-                        imageUrl: imgURL == null
-                            ? "https://firebasestorage.googleapis.com/v0/b/scan-market.appspot.com/o/Jx4ATDi52BNaGHuTehxW2zMgt4C2%2FUserProfille%2Fimage_picker2771216902201923755.jpg?alt=media&token=b31dce1d-6b03-475f-a16e-8f897aac2ae2"
-                            : imgURL.toString()),
+                    child: loadingPhoto
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : CachedNetworkImage(
+                            imageBuilder: (context, imageProvider) => Container(
+                                  width: MediaQuery.of(context).size.width * .4,
+                                  height:
+                                      MediaQuery.of(context).size.width * .3,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover),
+                                  ),
+                                ),
+                            placeholder: (context, url) => Container(
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 1.0,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Color(0xFFff6768))),
+                                  width: 100.0,
+                                  height: 100.0,
+                                ),
+                            errorWidget: (context, url, error) =>
+                                Text(error.toString()),
+                            width: 300.0,
+                            height: 200.0,
+                            fit: BoxFit.cover,
+                            imageUrl: imgURL == null
+                                ? "https://firebasestorage.googleapis.com/v0/b/scan-market.appspot.com/o/Jx4ATDi52BNaGHuTehxW2zMgt4C2%2FUserProfille%2Fimage_picker2771216902201923755.jpg?alt=media&token=b31dce1d-6b03-475f-a16e-8f897aac2ae2"
+                                : imgURL.toString()),
                   ),
                 ),
                 CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
@@ -170,9 +174,6 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
   _complete(context) async {
     var userData = Provider.of<UserData>(context, listen: false);
     try {
-      setState(() {
-        loading = true;
-      });
       if (_formKey.currentState.validate()) {
         Store().storeUserInfo({
           kUserName: userData.name,
@@ -181,12 +182,23 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
           kUserPhoto: imgURL
         });
         print("done create account");
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        sharedPreferences.setBool("seen", true);
+        sharedPreferences.setString("username", userData.name);
+        sharedPreferences.setString("userpass", userData.pass);
+        sharedPreferences.setString("useremail", userData.email);
+        sharedPreferences.setString("userphoto", imgURL);
 
+        print(sharedPreferences.getKeys());
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => BottomTabView()));
       }
     } catch (e) {
       Scaffold.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+      setState(() {
+        loading = false;
+      });
     }
     setState(() {
       loading = false;

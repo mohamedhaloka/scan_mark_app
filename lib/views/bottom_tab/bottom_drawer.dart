@@ -4,12 +4,29 @@ import 'package:scan_mark_app/views/sign_in/view.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:shape_of_view/shape/diagonal.dart';
 import 'package:shape_of_view/shape_of_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../const.dart';
 
-class BottomDrawer extends StatelessWidget {
+class BottomDrawer extends StatefulWidget {
+  @override
+  _BottomDrawerState createState() => _BottomDrawerState();
+}
+
+class _BottomDrawerState extends State<BottomDrawer> {
+  String name, photo;
+  SharedPreferences preferences;
+  getUserData() async {
+    preferences = await SharedPreferences.getInstance();
+    setState(() {
+      name = preferences.getString("username") ?? "hhhhhhh";
+      photo = preferences.getString("userphoto");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    getUserData();
     return Drawer(
       child: Column(
         children: [
@@ -21,7 +38,11 @@ class BottomDrawer extends StatelessWidget {
                   direction: DiagonalDirection.Right,
                   angle: DiagonalAngle.deg(angle: 10)),
               child: Container(
-                padding: EdgeInsets.only(top: 40, left: 20, right: 30),
+                padding: EdgeInsets.only(
+                  top: 40,
+                  left: 20,
+                  right: 30
+                ),
                 color: kPrimaryColor,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,15 +62,14 @@ class BottomDrawer extends StatelessWidget {
                             height: 100,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.red,
+                                color: kPrimaryColor,
                                 image: DecorationImage(
-                                    image: NetworkImage(
-                                        "https://cdn.now.howstuffworks.com/media-content/0b7f4e9b-f59c-4024-9f06-b3dc12850ab7-1920-1080.jpg"),
+                                    image: NetworkImage(photo==null?"https://firebasestorage.googleapis.com/v0/b/scan-market.appspot.com/o/Jx4ATDi52BNaGHuTehxW2zMgt4C2%2FUserProfille%2Fimage_picker2771216902201923755.jpg?alt=media&token=b31dce1d-6b03-475f-a16e-8f897aac2ae2":photo),
                                     fit: BoxFit.cover)),
                           ),
                           CustomSizedBox(heiNum: 0.016, wedNum: 0.0),
                           Text(
-                            "Mohamed Nasr",
+                            "$name",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
@@ -74,7 +94,11 @@ class BottomDrawer extends StatelessWidget {
 
   drawListTile(tittle, imgSrc, context, routeName) {
     return ListTile(
-      leading: Image.asset("assets/img/home/drawer/" + imgSrc + ".png",width: 30,height: 30,),
+      leading: Image.asset(
+        "assets/img/home/drawer/" + imgSrc + ".png",
+        width: 25,
+        height: 25,
+      ),
       title: Text(tittle),
       onTap: tittle == "Home" || tittle == "Cart"
           ? () {

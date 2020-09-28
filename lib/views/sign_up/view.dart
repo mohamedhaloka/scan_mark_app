@@ -118,10 +118,10 @@ class _SignUpViewState extends State<SignUpView> {
   _signUp(context) async {
     var userData = Provider.of<UserData>(context, listen: false);
     try {
-      setState(() {
-        loading = true;
-      });
       if (_formKey.currentState.validate()) {
+        setState(() {
+          loading = true;
+        });
         Auth().signUpWithEmailAndPassword(userData.email, userData.pass);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => CompleteSignUp()));
