@@ -26,8 +26,9 @@ void main() async {
 
   bool seenOnBoarding = sharedPreferences.getBool("seenOnBoarding");
   String _screenOnBoarding;
+  print(_screenOnBoarding);
 
-  if (seenOnBoarding == false || seenOnBoarding == null) {
+  if (seenOnBoarding == null) {
     _screenOnBoarding = OnBoarding.id;
   } else {
     _screenOnBoarding = SignInView.id;

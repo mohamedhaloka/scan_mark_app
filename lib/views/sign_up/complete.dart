@@ -123,12 +123,13 @@ class _CompleteSignUpState extends State<CompleteSignUp> {
               kUserPassword: userData.pass,
               kUserPhone: userData.phone,
               kUserEmail: userData.email,
-              kUserAddress:userData.address,
+              kUserAddress: userData.address,
               kUserPhoto: imgURL,
             });
         print("done create account");
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
+        sharedPreferences.clear();
         sharedPreferences.setBool("seen", true);
         sharedPreferences.setString("username", userData.name);
         sharedPreferences.setString("userphone", userData.phone);

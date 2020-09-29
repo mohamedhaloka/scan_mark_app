@@ -123,7 +123,6 @@ class BottomDrawer extends StatelessWidget {
                       await SharedPreferences.getInstance();
                   sharedPreferences.setBool("seen", false);
                   sharedPreferences.setBool("seenOnBoarding", true);
-                  sharedPreferences.clear();
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => SignInView()));
                 }
