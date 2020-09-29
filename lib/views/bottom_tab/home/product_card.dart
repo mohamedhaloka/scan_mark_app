@@ -4,20 +4,16 @@ import 'package:scan_mark_app/models/cart.dart';
 import 'package:scan_mark_app/views/product_details/view.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 
-import '../../../db_helper.dart';
-
 class ProductCard extends StatefulWidget {
   @override
   _ProductCardState createState() => _ProductCardState();
 }
 
 class _ProductCardState extends State<ProductCard> {
-  DbHelper dbHelper;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    dbHelper = DbHelper();
   }
 
   @override
@@ -60,17 +56,7 @@ class _ProductCardState extends State<ProductCard> {
                 drawButtonOptions(Icons.favorite, () {
                   print("love");
                 }),
-                drawButtonOptions(Icons.add, () async {
-                  var cart = Cart({
-                    'productName': "Product",
-                    'photo': "https://j.top4top.io/p_1731mzz6s1.png",
-                    'priceDetails': "30",
-                    'averagePriceDetails': "28.5",
-                  });
-                  int id = await dbHelper.createCart(cart);
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text("Add Product $id to Cart Successfuly")));
-                }),
+                drawButtonOptions(Icons.add, () {}),
               ],
             )
           ],

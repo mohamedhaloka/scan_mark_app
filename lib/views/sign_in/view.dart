@@ -38,6 +38,8 @@ class _SignInViewState extends State<SignInView> {
 
   String photo;
   String name;
+  String address;
+  String phone;
 
   @override
   Widget build(BuildContext context) {
@@ -145,8 +147,12 @@ class _SignInViewState extends State<SignInView> {
           setState(() {
             name = value.userName;
             photo = value.userPhoto;
+            address = value.userAddress;
+            phone = value.userPhone;
             print("USer Name: " + name);
             print("USer Photo: " + photo);
+            print("USer Address: " + address);
+            print("USer phone: " + phone);
           });
         });
         Timer(Duration(seconds: 2), () async {
@@ -156,6 +162,8 @@ class _SignInViewState extends State<SignInView> {
           sharedPreferences.setString("userpass", userData.pass);
           sharedPreferences.setString("useremail", userData.email);
           sharedPreferences.setString("userphoto", photo);
+          sharedPreferences.setString("userphone", phone);
+          sharedPreferences.setString("useraddress", address);
 
           print("done");
           Navigator.pushReplacement(context,

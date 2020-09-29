@@ -47,8 +47,6 @@ dependencies:
   cached_network_image:
   dio:
   http:
-  path:
-  sqflite:
 
 
 dev_dependencies:

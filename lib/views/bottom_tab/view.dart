@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:bottom_indicator_bar/bottom_indicator_bar.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
+import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/bottom_tab/bottom_drawer.dart';
 import 'package:scan_mark_app/views/search/view.dart';
 import 'package:scan_mark_app/views/sign_in/modal.dart';
@@ -27,13 +29,15 @@ class _BottomTabViewState extends State<BottomTabView> {
     BottomIndicatorNavigationBarItem(icon: Icons.shopping_cart),
   ];
 
-  String photo, name;
+  String photo, name, address, phone;
   SharedPreferences preferences;
   getUserData() async {
     preferences = await SharedPreferences.getInstance();
     setState(() {
       name = preferences.getString("username") ?? "No User";
       photo = preferences.getString("userphoto");
+      address = preferences.getString("useraddress");
+      phone = preferences.getString("userphone");
     });
   }
 
@@ -47,6 +51,22 @@ class _BottomTabViewState extends State<BottomTabView> {
   initState() {
     super.initState();
     this.outputController = new TextEditingController();
+    getCurrentUser();
+  }
+
+  User loggedInUser;
+
+  void getCurrentUser() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        print(loggedInUser.email);
+        print(loggedInUser.uid);
+      }
+    } catch (e) {
+      print("error" + e);
+    }
   }
 
   Future _scan(context) async {
