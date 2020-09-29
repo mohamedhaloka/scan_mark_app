@@ -9,6 +9,7 @@ import 'package:scan_mark_app/provider/progress_statue.dart';
 import 'package:scan_mark_app/provider/userData.dart';
 import 'package:scan_mark_app/views/about/view.dart';
 import 'package:scan_mark_app/views/bottom_tab/view.dart';
+import 'package:scan_mark_app/views/onboarding/view.dart';
 import 'package:scan_mark_app/views/product_details/view.dart';
 import 'package:scan_mark_app/views/search/view.dart';
 import 'package:scan_mark_app/views/setting/view.dart';
@@ -35,11 +36,11 @@ void main() async {
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp( AlertProvider(
-      child:  MyApp(
+    runApp(AlertProvider(
+      child: MyApp(
         screen: _screen,
       ),
-      config:  AlertConfig(ok: "", cancel: ""),
+      config: AlertConfig(ok: "", cancel: ""),
     ));
   });
 }
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
         routes: {
           BottomTabView.id: (context) => BottomTabView(),
           SignInView.id: (context) => SignInView(),
+          OnBoarding.id: (context) => OnBoarding(),
           SignUpView.id: (context) => SignUpView(),
           ProductDetailsView.id: (context) => ProductDetailsView(),
           AboutView.id: (context) => AboutView(),
