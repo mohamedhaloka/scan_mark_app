@@ -1,10 +1,6 @@
-import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:path/path.dart' as Path;
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:easy_alert/easy_alert.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/provider/userData.dart';
@@ -121,6 +117,8 @@ class _SettingViewState extends State<SettingView> {
       preferences.setString("userphone", userData.phone);
       preferences.setString("useraddress", userData.address);
       Navigator.pop(context);
+      Alert.toast(context,"Your information has been successfully updated",position: ToastPosition.bottom, duration: ToastDuration.long);
+
     }
   }
 }

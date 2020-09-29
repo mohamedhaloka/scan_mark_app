@@ -1,5 +1,7 @@
+import 'package:easy_alert/easy_alert.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
@@ -12,6 +14,7 @@ import 'package:scan_mark_app/views/search/view.dart';
 import 'package:scan_mark_app/views/setting/view.dart';
 import 'package:scan_mark_app/views/sign_in/view.dart';
 import 'package:scan_mark_app/views/sign_up/view.dart';
+import 'package:scan_mark_app/views/splash/view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -27,12 +30,18 @@ void main() async {
   if (seen == false || seen == null) {
     _screen = SignInView.id;
   } else {
-    _screen = BottomTabView.id;
+    _screen = SplashView.id;
   }
 
-  runApp(MyApp(
-    screen: _screen,
-  ));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp( AlertProvider(
+      child:  MyApp(
+        screen: _screen,
+      ),
+      config:  AlertConfig(ok: "", cancel: ""),
+    ));
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -64,6 +73,7 @@ class MyApp extends StatelessWidget {
           AboutView.id: (context) => AboutView(),
           SearchView.id: (context) => SearchView(),
           SettingView.id: (context) => SettingView(),
+          SplashView.id: (context) => SplashView(),
         },
         initialRoute: screen,
       ),
