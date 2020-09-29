@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:scan_mark_app/views/sign_in/view.dart';
+import 'package:scan_mark_app/views/bottom_tab/view.dart';
 
 class SplashView extends StatefulWidget {
   static String id = "Splash View";
@@ -15,11 +15,12 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 2), (){
-      Navigator.pushReplacement(context,
-      MaterialPageRoute(builder: (context)=>SignInView()));
+    Timer(Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => BottomTabView()));
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +32,10 @@ class _SplashViewState extends State<SplashView> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(
-          child: Image.asset("assets/img/logo.png",width: 220,),
+          child: Image.asset(
+            "assets/img/splash/splash-logo.png",
+            width: 220,
+          ),
         ),
       ),
     );

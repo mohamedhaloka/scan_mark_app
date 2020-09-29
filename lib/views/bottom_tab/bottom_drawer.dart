@@ -7,12 +7,21 @@ import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:shape_of_view/shape/diagonal.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../const.dart';
 
 class BottomDrawer extends StatelessWidget {
   BottomDrawer({@required this.name, @required this.photo});
   String name;
   String photo;
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -32,13 +41,27 @@ class BottomDrawer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      icon: Icon(Icons.settings),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, SettingView.id,arguments: photo);
-                      },
-                      color: Colors.white,
+                    Column(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.settings),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pushNamed(context, SettingView.id,
+                                arguments: photo);
+                          },
+                          color: Colors.white,
+                        ),
+                        CustomSizedBox(heiNum: 0.08, wedNum: 0.0),
+                        IconButton(
+                          icon: Icon(Icons.report),
+                          onPressed: () {
+                            _launchURL(
+                                "mailto:mnhaloka@gmail.com?subject=Report from Scan Market");
+                          },
+                          color: Colors.white,
+                        ),
+                      ],
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 60),
@@ -52,7 +75,7 @@ class BottomDrawer extends StatelessWidget {
                                 color: kPrimaryColor,
                                 image: DecorationImage(
                                     image: NetworkImage(photo == null
-                                        ? "https://firebasestorage.googleapis.com/v0/b/scan-market.appspot.com/o/Jx4ATDi52BNaGHuTehxW2zMgt4C2%2FUserProfille%2Fimage_picker2771216902201923755.jpg?alt=media&token=b31dce1d-6b03-475f-a16e-8f897aac2ae2"
+                                        ? "https://thumbs.dreamstime.com/b/user-account-line-icon-outline-person-logo-illustration-linear-pictogram-isolated-white-90234649.jpg"
                                         : photo),
                                     fit: BoxFit.cover)),
                           ),

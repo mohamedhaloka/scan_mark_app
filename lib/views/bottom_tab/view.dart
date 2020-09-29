@@ -85,7 +85,7 @@ class _BottomTabViewState extends State<BottomTabView> {
                 color: kPrimaryColor,
                 image: DecorationImage(
                     image: NetworkImage(photo == null
-                        ? "https://firebasestorage.googleapis.com/v0/b/scan-market.appspot.com/o/Jx4ATDi52BNaGHuTehxW2zMgt4C2%2FUserProfille%2Fimage_picker2771216902201923755.jpg?alt=media&token=b31dce1d-6b03-475f-a16e-8f897aac2ae2"
+                        ? "https://thumbs.dreamstime.com/b/user-account-line-icon-outline-person-logo-illustration-linear-pictogram-isolated-white-90234649.jpg"
                         : photo),
                     fit: BoxFit.cover)),
           ),
