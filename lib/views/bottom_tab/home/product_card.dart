@@ -37,7 +37,7 @@ class ProductCard extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             CustomSizedBox(heiNum: 0.01, wedNum: 0.0),
-            Image.network("${productInfo.productImage}"),
+            Image.network("${productInfo.productImage}",width: 60,),
             CustomSizedBox(heiNum: 0.01, wedNum: 0.0),
             drawPriceDetails("Price", "${productInfo.productPrice}"),
             CustomSizedBox(heiNum: 0.01, wedNum: 0.0),

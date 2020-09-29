@@ -45,13 +45,13 @@ class ProductDetails extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         drawPriceDetails("Best Price", "${productInfo.productPrice}"),
-                        CustomSizedBox(heiNum: 0.022, wedNum: 0.0),
+                        CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
                         drawPriceDetails("Average Price", "${productInfo.productAveragePrice}"),
                       ],
                     )
                   ],
                 ),
-                CustomSizedBox(heiNum: 0.034, wedNum: 0.0),
+                CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
                 Row(
                   children: [
                     drawButtonOptions(Icons.favorite, () {
@@ -66,14 +66,11 @@ class ProductDetails extends StatelessWidget {
               ],
             ),
           ),
-          Divider(
-            height: 0,
-          ),
           Stack(
             children: [
               Container(
                 width: customWidth(context, 1),
-                height: customHeight(context, 0.55),
+                height: customHeight(context, 0.53),
               ),
               Container(
                 width: customWidth(context, 1),
@@ -84,7 +81,7 @@ class ProductDetails extends StatelessWidget {
                 bottom: 0,
                 child: Container(
                   width: customWidth(context, 0.91),
-                  height: customHeight(context, 0.55),
+                  height: customHeight(context, 0.52),
                   child: SuperMarketsList(id: productInfo.productDocumentID,),
                 ),
               ),
