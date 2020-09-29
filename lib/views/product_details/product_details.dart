@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:scan_mark_app/const.dart';
+import 'package:scan_mark_app/models/products.dart';
 import 'package:scan_mark_app/views/product_details/super_markets_list.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 
 class ProductDetails extends StatelessWidget {
+  ProductDetails({this.productInfo});
+  Products productInfo;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,7 +28,7 @@ class ProductDetails extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "Fresh Natural Own Graphs",
+                  "${productInfo.productName}",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
@@ -34,16 +37,16 @@ class ProductDetails extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Image.asset(
-                      "assets/img/home/graps.png",
-                      width: 100,
+                    Image.network(
+                      "${productInfo.productImage}",
+                      width: 70,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        drawPriceDetails("Best Price", "1.68"),
+                        drawPriceDetails("Best Price", "${productInfo.productPrice}"),
                         CustomSizedBox(heiNum: 0.022, wedNum: 0.0),
-                        drawPriceDetails("Average Price", "2.08"),
+                        drawPriceDetails("Average Price", "${productInfo.productAveragePrice}"),
                       ],
                     )
                   ],
@@ -82,7 +85,7 @@ class ProductDetails extends StatelessWidget {
                 child: Container(
                   width: customWidth(context, 0.91),
                   height: customHeight(context, 0.55),
-                  child: SuperMarketsList(),
+                  child: SuperMarketsList(id: productInfo.productDocumentID,),
                 ),
               ),
             ],

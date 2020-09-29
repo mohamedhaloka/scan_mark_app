@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scan_mark_app/models/products.dart';
 import 'package:scan_mark_app/views/product_details/product_details.dart';
 
 import '../../const.dart';
@@ -7,6 +8,7 @@ class ProductDetailsView extends StatelessWidget {
   static String id = "Product Details View";
   @override
   Widget build(BuildContext context) {
+    Products productInfo = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("Product Details"),
@@ -26,7 +28,9 @@ class ProductDetailsView extends StatelessWidget {
               child: Container(
                 width: customWidth(context, 1),
                 height: customHeight(context, 0.88),
-                child: ProductDetails(),
+                child: ProductDetails(
+                  productInfo: productInfo,
+                ),
               )),
         ],
       ),

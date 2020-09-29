@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:scan_mark_app/const.dart';
+import 'package:scan_mark_app/models/products.dart';
 import 'package:scan_mark_app/models/cart.dart';
 import 'package:scan_mark_app/views/product_details/view.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 
-class ProductCard extends StatefulWidget {
-  @override
-  _ProductCardState createState() => _ProductCardState();
-}
-
-class _ProductCardState extends State<ProductCard> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
+class ProductCard extends StatelessWidget {
+  ProductCard({this.productInfo});
+  Products productInfo;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,22 +25,24 @@ class _ProductCardState extends State<ProductCard> {
           ]),
       child: GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, ProductDetailsView.id);
+          Navigator.pushNamed(context, ProductDetailsView.id,
+              arguments: productInfo);
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Fresh Natural Own Graphs",
+              "${productInfo.productName}",
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             CustomSizedBox(heiNum: 0.01, wedNum: 0.0),
-            Image.asset("assets/img/home/graps.png"),
+            Image.network("${productInfo.productImage}"),
             CustomSizedBox(heiNum: 0.01, wedNum: 0.0),
-            drawPriceDetails("Price", "1.68"),
+            drawPriceDetails("Price", "${productInfo.productPrice}"),
             CustomSizedBox(heiNum: 0.01, wedNum: 0.0),
-            drawPriceDetails("Average Price", "2.08"),
+            drawPriceDetails(
+                "Average Price", "${productInfo.productAveragePrice}"),
             CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 
 const kPrimaryColor = Color(0xff0E0E0E);
@@ -13,13 +12,28 @@ const String kUserEmail = "user email";
 const String kUserPassword = "user pass";
 const String kUserAddress = "user address";
 
+//Post Collection
+const String kProductCollection = "Products Collection";
+const String kProductImage = "post image";
+const String kProductTittle = "post name";
+const String kProductDescription = "post description";
+const String kProductPrice = "post price";
+const String kProductAveragePrice = "post average price";
+const String kProductADocumentID = "post document id";
+const String kProductID = "post id";
 
-customHeight(context,heiNum)
-{
-  return MediaQuery.of(context).size.height*heiNum;
+//Market Collection
+const String kMarketsCollection = "Super Markets List";
+const String kMarketName = "market name";
+const String kMarketImg = "market image";
+const String kMarketPrice = "market price";
+const String kMarketDistance = "distance";
+
+
+customHeight(context, heiNum) {
+  return MediaQuery.of(context).size.height * heiNum;
 }
 
-customWidth(context,wedNum)
-{
-  return MediaQuery.of(context).size.width*wedNum;
+customWidth(context, wedNum) {
+  return MediaQuery.of(context).size.width * wedNum;
 }
