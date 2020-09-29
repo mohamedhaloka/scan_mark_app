@@ -3,29 +3,30 @@ import 'package:intro_screen_onboarding_flutter/intro_app.dart';
 import 'package:intro_screen_onboarding_flutter/introduction.dart';
 import 'package:intro_screen_onboarding_flutter/introscreenonboarding.dart';
 import 'package:scan_mark_app/views/sign_in/view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnBoarding extends StatelessWidget {
   static String id = "On Boarding View";
 
   final List<Introduction> list = [
     Introduction(
-      title: 'Buy & Sell',
-      subTitle: 'Browse the menu and order directly from the application',
+      title: 'Register',
+      subTitle: 'Create your account now and view all products',
       imageUrl: 'assets/images/onboarding3.png',
     ),
     Introduction(
-      title: 'Delivery',
-      subTitle: 'Your order will be immediately collected and',
+      title: 'Scan',
+      subTitle: 'Scan product for more details',
       imageUrl: '',
     ),
     Introduction(
-      title: 'Receive Money',
-      subTitle: 'Pick up delivery at your door and enjoy groceries',
+      title: 'Order',
+      subTitle: 'Request your order and reach your door',
       imageUrl: '',
     ),
     Introduction(
       title: 'Finish',
-      subTitle: 'Browse the menu and order directly from the application',
+      subTitle: 'Do not forget to rate us in Google Play',
       imageUrl: '',
     ),
   ];
@@ -33,7 +34,10 @@ class OnBoarding extends StatelessWidget {
   Widget build(BuildContext context) {
     return IntroScreenOnboarding(
       introductionList: list,
-      onTapSkipButton: () {
+      onTapSkipButton: () async {
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        sharedPreferences.setBool("seenOnBoarding", true);
         Navigator.push(
           context,
           MaterialPageRoute(

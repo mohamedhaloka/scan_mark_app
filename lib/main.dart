@@ -24,12 +24,19 @@ void main() async {
 
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-  bool seen = sharedPreferences.getBool("seen");
+  bool seenOnBoarding = sharedPreferences.getBool("seenOnBoarding");
+  String _screenOnBoarding;
 
+  if (seenOnBoarding == false || seenOnBoarding == null) {
+    _screenOnBoarding = OnBoarding.id;
+  } else {
+    _screenOnBoarding = SignInView.id;
+  }
+  bool seen = sharedPreferences.getBool("seen");
   String _screen;
 
   if (seen == false || seen == null) {
-    _screen = SignInView.id;
+    _screen = _screenOnBoarding;
   } else {
     _screen = SplashView.id;
   }
