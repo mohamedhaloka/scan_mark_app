@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scan_mark_app/services/auth.dart';
 import 'package:scan_mark_app/views/about/view.dart';
+import 'package:scan_mark_app/views/favourite/view.dart';
 import 'package:scan_mark_app/views/setting/view.dart';
 import 'package:scan_mark_app/views/sign_in/view.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
@@ -10,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../const.dart';
 
+// ignore: must_be_immutable
 class BottomDrawer extends StatelessWidget {
   BottomDrawer({@required this.name, @required this.photo});
   String name;
@@ -95,7 +97,7 @@ class BottomDrawer extends StatelessWidget {
               )),
           drawListTile("Home", "home", context, ""),
           drawListTile("Cart", "shopping-cart", context, ""),
-          drawListTile("Favourite", "favourite", context, ""),
+          drawListTile("Favourite", "favourite", context, FavouriteView.id),
           Divider(),
           drawListTile("About", "information", context, AboutView.id),
           drawListTile("Log out", "exit", context, ""),

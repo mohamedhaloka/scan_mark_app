@@ -8,7 +8,9 @@ import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
 import 'package:scan_mark_app/provider/progress_statue.dart';
 import 'package:scan_mark_app/provider/userData.dart';
 import 'package:scan_mark_app/views/about/view.dart';
+import 'package:scan_mark_app/views/bottom_tab/home/scan_qr.dart';
 import 'package:scan_mark_app/views/bottom_tab/view.dart';
+import 'package:scan_mark_app/views/favourite/view.dart';
 import 'package:scan_mark_app/views/onboarding/view.dart';
 import 'package:scan_mark_app/views/product_details/view.dart';
 import 'package:scan_mark_app/views/search/view.dart';
@@ -53,6 +55,7 @@ void main() async {
   });
 }
 
+// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
   MyApp({this.screen});
 
@@ -84,6 +87,7 @@ class MyApp extends StatelessWidget {
           SearchView.id: (context) => SearchView(),
           SettingView.id: (context) => SettingView(),
           SplashView.id: (context) => SplashView(),
+          FavouriteView.id: (context) => FavouriteView(),
         },
         initialRoute: screen,
       ),

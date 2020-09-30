@@ -32,7 +32,7 @@ dependencies:
   bottom_indicator_bar: ^1.0.0
   provider: ^4.3.2+2
   shape_of_view: ^1.0.2
-  qrscan: ^0.2.17
+  qrscan:
   flappy_search_bar: 1.4.1
   shared_preferences: ^0.5.10
   cloud_firestore: ^0.14.0+2

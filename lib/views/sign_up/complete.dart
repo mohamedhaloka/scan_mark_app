@@ -1,22 +1,16 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/provider/progress_statue.dart';
 import 'package:scan_mark_app/provider/userData.dart';
-import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/bottom_tab/view.dart';
 import 'package:scan_mark_app/widgets/custom_filled_button.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:scan_mark_app/widgets/custom_text_field.dart';
-import 'package:path/path.dart' as Path;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
 import '../../const.dart';
 
 class CompleteSignUp extends StatefulWidget {

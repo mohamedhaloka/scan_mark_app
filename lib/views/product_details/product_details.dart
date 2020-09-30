@@ -1,12 +1,44 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/models/products.dart';
+import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/product_details/super_markets_list.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ProductDetails extends StatelessWidget {
+// ignore: must_be_immutable
+class ProductDetails extends StatefulWidget {
   ProductDetails({this.productInfo});
   Products productInfo;
+
+  @override
+  _ProductDetailsState createState() => _ProductDetailsState();
+}
+
+class _ProductDetailsState extends State<ProductDetails> {
+  User loggedInUser;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        print(loggedInUser.email);
+        print(loggedInUser.uid);
+      }
+    } catch (e) {
+      print("error" + e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +60,7 @@ class ProductDetails extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "${productInfo.productName}",
+                  "${widget.productInfo.productName}",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
@@ -38,15 +70,17 @@ class ProductDetails extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Image.network(
-                      "${productInfo.productImage}",
+                      "${widget.productInfo.productImage}",
                       width: 70,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        drawPriceDetails("Best Price", "${productInfo.productPrice}"),
+                        drawPriceDetails(
+                            "Best Price", "${widget.productInfo.productPrice}"),
                         CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
-                        drawPriceDetails("Average Price", "${productInfo.productAveragePrice}"),
+                        drawPriceDetails("Average Price",
+                            "${widget.productInfo.productAveragePrice}"),
                       ],
                     )
                   ],
@@ -54,12 +88,72 @@ class ProductDetails extends StatelessWidget {
                 CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
                 Row(
                   children: [
-                    drawButtonOptions(Icons.favorite, () {
-                      print("love");
+                    drawButtonOptions(Icons.favorite, () async {
+                      String name, email, phone, address;
+                      SharedPreferences sharedpreferences =
+                          await SharedPreferences.getInstance();
+                      setState(() {
+                        name = sharedpreferences.getString("username");
+                        email = sharedpreferences.getString("useremail");
+                        phone = sharedpreferences.getString("userphone");
+                        address = sharedpreferences.getString("useraddress");
+                      });
+                      Store().storeUserInfo({
+                        kUserName: name,
+                        kUserEmail: email,
+                        kUserPhone: phone,
+                        kUserAddress: address,
+                      }, loggedInUser.uid);
+                      //Store Cart
+                      Store().storeFavouriteOfUser({
+                        kProductTittle: widget.productInfo.productName,
+                        kProductDescription:
+                            widget.productInfo.productDescription,
+                        kProductPrice: widget.productInfo.productPrice,
+                        kProductID: widget.productInfo.productID,
+                        kProductADocumentID:
+                            widget.productInfo.productDocumentID,
+                        kProductAveragePrice:
+                            widget.productInfo.productAveragePrice,
+                        kProductImage: widget.productInfo.productImage
+                      }, loggedInUser.uid);
+                      //Store Order
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              "Add ${widget.productInfo.productName} Successfully")));
                     }),
                     CustomSizedBox(heiNum: 0.0, wedNum: 0.05),
-                    drawButtonOptions(Icons.add, () {
-                      print("add");
+                    drawButtonOptions(Icons.add, () async {
+                      String name, email, phone, address;
+                      SharedPreferences sharedpreferences =
+                          await SharedPreferences.getInstance();
+                      setState(() {
+                        name = sharedpreferences.getString("username");
+                        email = sharedpreferences.getString("useremail");
+                        phone = sharedpreferences.getString("userphone");
+                        address = sharedpreferences.getString("useraddress");
+                      });
+                      Store().storeUserInfo({
+                        kUserName: name,
+                        kUserEmail: email,
+                        kUserPhone: phone,
+                        kUserAddress: address,
+                      }, loggedInUser.uid);
+                      //Store Cart
+                      Store().storeCartOfUserInfo({
+                        kProductTittle: widget.productInfo.productName,
+                        kProductDescription:
+                            widget.productInfo.productDescription,
+                        kProductPrice: widget.productInfo.productPrice,
+                        kProductID: widget.productInfo.productID,
+                        kProductAveragePrice:
+                            widget.productInfo.productAveragePrice,
+                        kProductImage: widget.productInfo.productImage
+                      }, loggedInUser.uid);
+                      //Store Order
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              "Add ${widget.productInfo.productName} Successfully")));
                     }),
                   ],
                 )
@@ -82,7 +176,9 @@ class ProductDetails extends StatelessWidget {
                 child: Container(
                   width: customWidth(context, 0.91),
                   height: customHeight(context, 0.52),
-                  child: SuperMarketsList(id: productInfo.productDocumentID,),
+                  child: SuperMarketsList(
+                    id: widget.productInfo.productDocumentID,
+                  ),
                 ),
               ),
             ],
@@ -103,7 +199,7 @@ class ProductDetails extends StatelessWidget {
             style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
           ),
           Text(
-            "$price\$",
+            "$price EGP",
             style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
           ),
         ],

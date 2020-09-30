@@ -1,19 +1,13 @@
-import 'dart:convert';
-
 import 'package:bottom_indicator_bar/bottom_indicator_bar.dart';
-import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
-import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/bottom_tab/bottom_drawer.dart';
-import 'package:scan_mark_app/views/search/view.dart';
-import 'package:scan_mark_app/views/sign_in/modal.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../const.dart';
 import 'cart/view.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
 import 'home/view.dart';
 
 class BottomTabView extends StatefulWidget {
@@ -45,12 +39,10 @@ class _BottomTabViewState extends State<BottomTabView> {
 
   GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
 
-  TextEditingController outputController;
-
   @override
   initState() {
     super.initState();
-    this.outputController = new TextEditingController();
+    this._outputController = new TextEditingController();
     getCurrentUser();
   }
 
@@ -69,16 +61,20 @@ class _BottomTabViewState extends State<BottomTabView> {
     }
   }
 
-  Future _scan(context) async {
-    String barcode = await scanner.scan();
-    outputController.text = barcode;
-    print("The Output of QR Code is:" + outputController.text);
-    Navigator.pushNamed(context, SearchView.id,
-        arguments: outputController.text);
+  orderDone(context) {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: Text("HAaaaa"),
+            ));
   }
 
-  orderDone() {
-    print("order done");
+  TextEditingController _outputController;
+
+  Future _scan() async {
+    String barcode = await scanner.scan();
+    this._outputController.text = barcode;
+    print(_outputController.text);
   }
 
   @override
@@ -126,7 +122,7 @@ class _BottomTabViewState extends State<BottomTabView> {
                     )
                   : Icon(Icons.check),
               onPressed: () {
-                checkIndex == 0 ? _scan(outputController) : orderDone();
+                checkIndex == 0 ? _scan() : orderDone(context);
               })
         ],
       ),

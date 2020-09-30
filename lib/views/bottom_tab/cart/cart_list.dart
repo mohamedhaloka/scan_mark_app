@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:scan_mark_app/views/product_details/view.dart';
+import 'package:scan_mark_app/models/products.dart';
+import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 
 import '../../../const.dart';
@@ -14,94 +17,127 @@ class _CartListState extends State<CartList> {
   @override
   void initState() {
     super.initState();
+
+    getCurrentUser();
+  }
+
+  User loggedInUser;
+
+  void getCurrentUser() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        print(loggedInUser.email);
+        print(loggedInUser.uid);
+      }
+    } catch (e) {
+      print("error" + e);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(builder: (context, snapshot) {
-      print(snapshot.hasData);
-      if (snapshot.hasData) {
-        return LayoutBuilder(builder: (context, constrant) {
-          if (snapshot.data.length == 0) {
-            return Center(child: Image.asset("assets/img/empty-cart.png"));
-          }
-          return AnimationLimiter(
-            child: ListView.builder(
-              itemBuilder: (_, index) => AnimationConfiguration.staggeredList(
-                position: index,
-                duration: const Duration(milliseconds: 575),
-                child: SlideAnimation(
-                  verticalOffset: 150.0,
-                  child: Container(
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(18),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              offset: Offset(2, 3),
-                              spreadRadius: 2,
-                              blurRadius: 4)
-                        ]),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, ProductDetailsView.id);
-                      },
-                      child: Column(
-                        children: [
-                          Text(
-                            "${snapshot.data[index]['productName']}",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                          CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Image.network(
-                                "${snapshot.data[index]['photo']}",
-                                width: 100,
-                              ),
-                              CustomSizedBox(heiNum: 0.0, wedNum: 0.04),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    drawPriceDetails("Price",
-                                        "${snapshot.data[index]['priceDetails']}"),
-                                    drawPriceDetails("Average Price",
-                                        "${snapshot.data[index]['averagePriceDetails']}"),
-                                  ],
+    return StreamBuilder<QuerySnapshot>(
+        stream: Store().getCartOfUser(loggedInUser.uid),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Products> productInfo = [];
+            for (var doc in snapshot.data.docs) {
+              productInfo.add(Products(
+                productImage: doc.data()[kProductImage],
+                productName: doc.data()[kProductTittle],
+                productPrice: doc.data()[kProductPrice],
+                productAveragePrice: doc.data()[kProductAveragePrice],
+                productID: doc.data()[kProductID],
+                productDescription: doc.data()[kProductDescription],
+                productDocumentID: doc.id,
+              ));
+            }
+            return LayoutBuilder(builder: (context, constrant) {
+              if (productInfo.length == 0) {
+                return Center(child: Image.asset("assets/img/empty-cart.png"));
+              }
+              return AnimationLimiter(
+                child: ListView.builder(
+                  itemBuilder: (_, index) =>
+                      AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 575),
+                    child: SlideAnimation(
+                      verticalOffset: 150.0,
+                      child: Container(
+                        margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(2, 3),
+                                  spreadRadius: 2,
+                                  blurRadius: 4)
+                            ]),
+                        child: Column(
+                          children: [
+                            Text(
+                              "${productInfo[index].productName}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Image.network(
+                                  "${productInfo[index].productImage}",
+                                  width: 100,
                                 ),
-                              )
-                            ],
-                          ),
-                          CustomSizedBox(heiNum: 0.034, wedNum: 0.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              drawButtonOptions(Icons.delete, () {}),
-                            ],
-                          )
-                        ],
+                                CustomSizedBox(heiNum: 0.0, wedNum: 0.04),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      drawPriceDetails("Price",
+                                          "${productInfo[index].productPrice}"),
+                                      drawPriceDetails("Average Price",
+                                          "${productInfo[index].productAveragePrice}"),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            CustomSizedBox(heiNum: 0.034, wedNum: 0.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                drawButtonOptions(Icons.delete, () {
+                                  Store().deleteCartOfUserInfo(loggedInUser.uid,
+                                      productInfo[index].productDocumentID);
+                                  setState(() {});
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                      content: Text("Delete Successfuly")));
+                                }),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
+                  itemCount: productInfo.length,
                 ),
-              ),
-              itemCount: snapshot.data.length,
-            ),
+              );
+            });
+          }
+          return Center(
+            child: CircularProgressIndicator(),
           );
         });
-      }
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    });
   }
 
   drawButtonOptions(icon, onPress) {

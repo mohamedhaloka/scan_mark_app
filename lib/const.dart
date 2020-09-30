@@ -29,6 +29,12 @@ const String kMarketImg = "market image";
 const String kMarketPrice = "market price";
 const String kMarketDistance = "distance";
 
+//Cart Of User
+const String kCartCollection = "Cart Of User";
+
+//Cart Of User
+const String kFavouriteCollection = "Favourite Of User";
+
 
 customHeight(context, heiNum) {
   return MediaQuery.of(context).size.height * heiNum;

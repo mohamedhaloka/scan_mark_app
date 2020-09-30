@@ -14,6 +14,7 @@ class SearchView extends StatelessWidget {
   static String id = "Search View";
   @override
   Widget build(BuildContext context) {
+    var controller = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -37,6 +38,7 @@ class SearchView extends StatelessWidget {
         child: SearchBar(
           onSearch: search,
           hintText: "Type Product",
+          searchBarController: controller,
           placeHolder: Center(child: Text("Search Now!")),
           onItemFound: (quot, int index) {
             return ListTile(

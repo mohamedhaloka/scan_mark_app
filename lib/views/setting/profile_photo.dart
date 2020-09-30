@@ -5,12 +5,11 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:path/path.dart' as Path;
-import 'package:provider/provider.dart';
-import 'package:scan_mark_app/provider/userData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../const.dart';
 
+// ignore: must_be_immutable
 class ProfilePhoto extends StatefulWidget {
   ProfilePhoto({this.photo});
   String photo;
@@ -46,6 +45,7 @@ class _ProfilePhotoState extends State<ProfilePhoto> {
 
   Future uploadFile() async {
     try {
+      // ignore: deprecated_member_use
       await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
         setState(() {
           _image = image;
@@ -115,7 +115,6 @@ class _ProfilePhotoState extends State<ProfilePhoto> {
 
   updatePhoto() async {
     uploadFile();
-    var userData = Provider.of<UserData>(context, listen: false);
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String pass;
     setState(() {

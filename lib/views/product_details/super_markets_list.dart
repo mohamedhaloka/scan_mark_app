@@ -5,6 +5,7 @@ import 'package:scan_mark_app/models/markets.dart';
 import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 
+// ignore: must_be_immutable
 class SuperMarketsList extends StatefulWidget {
   SuperMarketsList({this.id});
   String id;

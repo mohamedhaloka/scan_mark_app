@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:scan_mark_app/provider/progress_statue.dart';
 import 'package:scan_mark_app/provider/userData.dart';
 import 'package:scan_mark_app/services/auth.dart';
-import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/sign_in/view.dart';
 import 'package:scan_mark_app/views/sign_up/complete.dart';
 import 'package:scan_mark_app/widgets/custom_filled_button.dart';
