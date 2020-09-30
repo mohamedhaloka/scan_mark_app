@@ -1,8 +1,40 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:scan_mark_app/const.dart';
+import 'package:http/http.dart' as http;
+import 'package:scan_mark_app/views/about/modal.dart';
 
-class AboutView extends StatelessWidget {
+class AboutView extends StatefulWidget {
   static String id = "About View";
+
+  @override
+  _AboutViewState createState() => _AboutViewState();
+}
+
+class _AboutViewState extends State<AboutView> {
+  String data;
+
+  Future<AboutUsModal> getData() async {
+    http.Response response =
+        await http.get("https://scan-market.firebaseio.com/aboutus.json");
+
+    var data = json.decode(response.body);
+
+    return AboutUsModal.fromJson(data);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData().then((value) {
+      setState(() {
+        data = value.content;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,12 +64,16 @@ class AboutView extends StatelessWidget {
             padding: EdgeInsets.all(18),
             width: customWidth(context, 1),
             height: customHeight(context, 0.7),
-            child: SingleChildScrollView(
-              child: Text(
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
+            child: data == null
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SingleChildScrollView(
+                    child: Text(
+                      "$data",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
           ),
         ],
       ),

@@ -56,7 +56,7 @@ class _FavouriteListState extends State<FavouriteList> {
             }
             return LayoutBuilder(builder: (context, constrant) {
               if (productInfo.length == 0) {
-                return Center(child: Image.asset("assets/img/empty-cart.png"));
+                return Center(child: Image.asset("assets/img/empty-favourite.png"));
               }
               return AnimationLimiter(
                 child: ListView.builder(
