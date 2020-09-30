@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
+import 'package:scan_mark_app/provider/scan_qrcode.dart';
 import 'package:scan_mark_app/views/bottom_tab/bottom_drawer.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:scan_mark_app/views/search/view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../const.dart';
 import 'cart/view.dart';
@@ -71,10 +73,13 @@ class _BottomTabViewState extends State<BottomTabView> {
 
   TextEditingController _outputController;
 
-  Future _scan() async {
+  Future _scan(context) async {
     String barcode = await scanner.scan();
     this._outputController.text = barcode;
-    print(_outputController.text);
+    print("The Output" + _outputController.text);
+    Provider.of<ScanQRCode>(context, listen: false).changeVal(true);
+    Navigator.pushNamed(context, SearchView.id,
+        arguments: _outputController.text);
   }
 
   @override
@@ -122,7 +127,7 @@ class _BottomTabViewState extends State<BottomTabView> {
                     )
                   : Icon(Icons.check),
               onPressed: () {
-                checkIndex == 0 ? _scan() : orderDone(context);
+                checkIndex == 0 ? _scan(context) : orderDone(context);
               })
         ],
       ),

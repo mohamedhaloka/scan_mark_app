@@ -1,20 +1,22 @@
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
+import 'package:scan_mark_app/models/products.dart';
+import 'package:scan_mark_app/provider/scan_qrcode.dart';
+import 'package:scan_mark_app/views/product_details/view.dart';
 
-Future<List> search(String search) async {
+Future<List<Products>> search(String search) async {
   await Future.delayed(Duration(seconds: 2));
-  return quotesList;
+  return productInfo;
 }
-
-List quotesList = ["tittle1", "tittle2"];
 
 class SearchView extends StatelessWidget {
   static String id = "Search View";
   @override
   Widget build(BuildContext context) {
-    var controller = ModalRoute.of(context).settings.arguments;
+    var productId = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -31,6 +33,30 @@ class SearchView extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          Visibility(
+            child: IconButton(
+              icon: Icon(Icons.priority_high),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    child: CupertinoAlertDialog(
+                      title: Text("Product ID"),
+                      content: Text("$productId"),
+                      actions: [
+                        FlatButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("OK"))
+                      ],
+                    ));
+              },
+              color: kPrimaryColor,
+            ),
+            visible: Provider.of<ScanQRCode>(context).scan ? true : false,
+          )
+        ],
         backgroundColor: Colors.transparent,
       ),
       body: Padding(
@@ -38,13 +64,15 @@ class SearchView extends StatelessWidget {
         child: SearchBar(
           onSearch: search,
           hintText: "Type Product",
-          searchBarController: controller,
           placeHolder: Center(child: Text("Search Now!")),
-          onItemFound: (quot, int index) {
+          onItemFound: (Products product, int index) {
             return ListTile(
-              onTap: () {},
-              title: Text("${quot[index]}"),
-              subtitle: Text("${quot[index]}"),
+              onTap: () {
+                Navigator.pushNamed(context, ProductDetailsView.id,
+                    arguments: productInfo[index]);
+              },
+              title: Text("${product.productName}"),
+              subtitle: Text("${product.productID}"),
             );
           },
         ),

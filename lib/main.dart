@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
 import 'package:scan_mark_app/provider/progress_statue.dart';
+import 'package:scan_mark_app/provider/scan_qrcode.dart';
 import 'package:scan_mark_app/provider/userData.dart';
 import 'package:scan_mark_app/views/about/view.dart';
 import 'package:scan_mark_app/views/bottom_tab/home/scan_qr.dart';
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserData()),
         ChangeNotifierProvider(create: (context) => ChangeIndex()),
         ChangeNotifierProvider(create: (context) => ProgressStatue()),
+        ChangeNotifierProvider(create: (context) => ScanQRCode()),
       ],
       child: MaterialApp(
         title: 'Scan Market',
