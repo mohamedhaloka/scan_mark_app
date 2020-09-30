@@ -11,6 +11,7 @@ class ProductsList extends StatefulWidget {
 }
 
 class _ProductsListState extends State<ProductsList> {
+  List<Products> productInfo = [];
   bool loading = true;
   getProducts() async {
     await for (var snapshot in Store().getProducts()) {

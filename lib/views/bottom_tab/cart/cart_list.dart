@@ -42,9 +42,9 @@ class _CartListState extends State<CartList> {
         stream: Store().getCartOfUser(loggedInUser.uid),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<Products> productInfo = [];
+            List<Products> productInfoInCart = [];
             for (var doc in snapshot.data.docs) {
-              productInfo.add(Products(
+              productInfoInCart.add(Products(
                 productImage: doc.data()[kProductImage],
                 productName: doc.data()[kProductTittle],
                 productPrice: doc.data()[kProductPrice],
@@ -55,7 +55,7 @@ class _CartListState extends State<CartList> {
               ));
             }
             return LayoutBuilder(builder: (context, constrant) {
-              if (productInfo.length == 0) {
+              if (productInfoInCart.length == 0) {
                 return Center(child: Image.asset("assets/img/empty-cart.png"));
               }
               return AnimationLimiter(
@@ -82,7 +82,7 @@ class _CartListState extends State<CartList> {
                         child: Column(
                           children: [
                             Text(
-                              "${productInfo[index].productName}",
+                              "${productInfoInCart[index].productName}",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
@@ -93,7 +93,7 @@ class _CartListState extends State<CartList> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Image.network(
-                                  "${productInfo[index].productImage}",
+                                  "${productInfoInCart[index].productImage}",
                                   width: 100,
                                 ),
                                 CustomSizedBox(heiNum: 0.0, wedNum: 0.04),
@@ -103,9 +103,9 @@ class _CartListState extends State<CartList> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       drawPriceDetails("Price",
-                                          "${productInfo[index].productPrice}"),
+                                          "${productInfoInCart[index].productPrice}"),
                                       drawPriceDetails("Average Price",
-                                          "${productInfo[index].productAveragePrice}"),
+                                          "${productInfoInCart[index].productAveragePrice}"),
                                     ],
                                   ),
                                 )
@@ -117,7 +117,7 @@ class _CartListState extends State<CartList> {
                               children: [
                                 drawButtonOptions(Icons.delete, () {
                                   Store().deleteCartOfUserInfo(loggedInUser.uid,
-                                      productInfo[index].productDocumentID);
+                                      productInfoInCart[index].productDocumentID);
                                   setState(() {});
                                   Scaffold.of(context).showSnackBar(SnackBar(
                                       content: Text("Delete Successfuly")));
@@ -129,7 +129,7 @@ class _CartListState extends State<CartList> {
                       ),
                     ),
                   ),
-                  itemCount: productInfo.length,
+                  itemCount: productInfoInCart.length,
                 ),
               );
             });

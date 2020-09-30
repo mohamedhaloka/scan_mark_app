@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
 import 'package:scan_mark_app/provider/scan_qrcode.dart';
+import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/bottom_tab/bottom_drawer.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:scan_mark_app/views/search/view.dart';
@@ -64,11 +65,9 @@ class _BottomTabViewState extends State<BottomTabView> {
   }
 
   orderDone(context) {
-    return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              content: Text("HAaaaa"),
-            ));
+    Store().storeOrderOfUser(loggedInUser.uid,{
+
+    });
   }
 
   TextEditingController _outputController;

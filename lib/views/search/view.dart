@@ -7,10 +7,10 @@ import 'package:scan_mark_app/models/products.dart';
 import 'package:scan_mark_app/provider/scan_qrcode.dart';
 import 'package:scan_mark_app/views/product_details/view.dart';
 
-Future<List<Products>> search(String search) async {
-  await Future.delayed(Duration(seconds: 2));
-  return productInfo;
-}
+// Future<List<Products>> search(String search) async {
+//   await Future.delayed(Duration(seconds: 2));
+//   return ;
+// }
 
 class SearchView extends StatelessWidget {
   static String id = "Search View";
@@ -18,65 +18,47 @@ class SearchView extends StatelessWidget {
   Widget build(BuildContext context) {
     var productId = ModalRoute.of(context).settings.arguments;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            color: kPrimaryColor,
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-        title: Text(
-          "Search".toUpperCase(),
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: [
-          Visibility(
-            child: IconButton(
-              icon: Icon(Icons.priority_high),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    child: CupertinoAlertDialog(
-                      title: Text("Product ID"),
-                      content: Text("$productId"),
-                      actions: [
-                        FlatButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text("OK"))
-                      ],
-                    ));
-              },
+        appBar: AppBar(
+          elevation: 0.0,
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
               color: kPrimaryColor,
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          title: Text(
+            "Search".toUpperCase(),
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
             ),
-            visible: Provider.of<ScanQRCode>(context).scan ? true : false,
-          )
-        ],
-        backgroundColor: Colors.transparent,
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: SearchBar(
-          onSearch: search,
-          hintText: "Type Product",
-          placeHolder: Center(child: Text("Search Now!")),
-          onItemFound: (Products product, int index) {
-            return ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, ProductDetailsView.id,
-                    arguments: productInfo[index]);
-              },
-              title: Text("${product.productName}"),
-              subtitle: Text("${product.productID}"),
-            );
-          },
+          ),
+          actions: [
+            Visibility(
+              child: IconButton(
+                icon: Icon(Icons.priority_high),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      child: CupertinoAlertDialog(
+                        title: Text("Product ID"),
+                        content: Text("$productId"),
+                        actions: [
+                          FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text("OK"))
+                        ],
+                      ));
+                },
+                color: kPrimaryColor,
+              ),
+              visible: Provider.of<ScanQRCode>(context).scan ? true : false,
+            )
+          ],
+          backgroundColor: Colors.transparent,
         ),
-      ),
-    );
+        body: Container());
   }
 }

@@ -18,6 +18,15 @@ class Store {
         .set(data);
   }
 
+  storeOrderOfUser(data, id) async {
+    await firebaseFirestore
+        .collection(kUserCollection)
+        .doc(id)
+        .collection(kOrderCollection)
+        .doc()
+        .set(data);
+  }
+
   storeFavouriteOfUser(data, id) async {
     await firebaseFirestore
         .collection(kUserCollection)

@@ -56,87 +56,85 @@ class _FavouriteListState extends State<FavouriteList> {
             }
             return LayoutBuilder(builder: (context, constrant) {
               if (productInfo.length == 0) {
-                return Center(child: Image.asset("assets/img/empty-favourite.png"));
+                return Center(
+                    child: Image.asset("assets/img/empty-favourite.png"));
               }
               return AnimationLimiter(
                 child: ListView.builder(
                   itemBuilder: (_, index) =>
                       AnimationConfiguration.staggeredList(
-                        position: index,
-                        duration: const Duration(milliseconds: 575),
-                        child: SlideAnimation(
-                          verticalOffset: 150.0,
-                          child: Container(
-                            margin: EdgeInsets.all(10),
-                            padding: EdgeInsets.all(18),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.black12,
-                                      offset: Offset(2, 3),
-                                      spreadRadius: 2,
-                                      blurRadius: 4)
-                                ]),
-                            child: GestureDetector(
-                              onTap: (){
-                              },
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "${productInfo[index].productName}",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold, fontSize: 16),
-                                  ),
-                                  CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
-                                  Row(
-                                    mainAxisAlignment:
+                    position: index,
+                    duration: const Duration(milliseconds: 575),
+                    child: SlideAnimation(
+                      verticalOffset: 150.0,
+                      child: Container(
+                        margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(2, 3),
+                                  spreadRadius: 2,
+                                  blurRadius: 4)
+                            ]),
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Column(
+                            children: [
+                              Text(
+                                "${productInfo[index].productName}",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
+                              Row(
+                                mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Image.network(
-                                        "${productInfo[index].productImage}",
-                                        width: 100,
-                                      ),
-                                      CustomSizedBox(heiNum: 0.0, wedNum: 0.04),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            drawPriceDetails("Price",
-                                                "${productInfo[index].productPrice}"),
-                                            drawPriceDetails("Average Price",
-                                                "${productInfo[index].productAveragePrice}"),
-                                          ],
-                                        ),
-                                      )
-                                    ],
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Image.network(
+                                    "${productInfo[index].productImage}",
+                                    width: 100,
                                   ),
-                                  CustomSizedBox(heiNum: 0.034, wedNum: 0.0),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      drawButtonOptions(Icons.delete, () {
-                                        Store().deleteFavouriteOfUserInfo(
-                                            loggedInUser.uid,
-                                            productInfo[index].productDocumentID);
-                                        setState(() {
-
-                                        });
-                                        Scaffold.of(context).showSnackBar(SnackBar(
-                                            content: Text("Delete Successfuly")));
-                                      }),
-                                    ],
+                                  CustomSizedBox(heiNum: 0.0, wedNum: 0.04),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        drawPriceDetails("Price",
+                                            "${productInfo[index].productPrice}"),
+                                        drawPriceDetails("Average Price",
+                                            "${productInfo[index].productAveragePrice}"),
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),
-                            ),
+                              CustomSizedBox(heiNum: 0.034, wedNum: 0.0),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  drawButtonOptions(Icons.delete, () {
+                                    Store().deleteFavouriteOfUserInfo(
+                                        loggedInUser.uid,
+                                        productInfo[index].productDocumentID);
+                                    setState(() {});
+                                    Scaffold.of(context).showSnackBar(SnackBar(
+                                        content: Text("Delete Successfuly")));
+                                  }),
+                                ],
+                              )
+                            ],
                           ),
                         ),
                       ),
+                    ),
+                  ),
                   itemCount: productInfo.length,
                 ),
               );
