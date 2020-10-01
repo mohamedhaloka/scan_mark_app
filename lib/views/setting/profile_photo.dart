@@ -22,6 +22,7 @@ class _ProfilePhotoState extends State<ProfilePhoto> {
   File _image;
   bool loadingPhoto = false;
   String imgURL;
+  final picker = ImagePicker();
 
   @override
   void initState() {
@@ -45,15 +46,14 @@ class _ProfilePhotoState extends State<ProfilePhoto> {
 
   Future uploadFile() async {
     try {
-      // ignore: deprecated_member_use
-      await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
-        setState(() {
-          _image = image;
-        });
-      });
-      print("step 1");
+      final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
       setState(() {
-        loadingPhoto = true;
+        if (pickedFile != null) {
+          _image = File(pickedFile.path);
+        } else {
+          print('No image selected.');
+        }
       });
       StorageReference storageReference = FirebaseStorage.instance.ref().child(
           '${loggedInUser.uid}/UserProfille/${Path.basename(_image.path)}');
