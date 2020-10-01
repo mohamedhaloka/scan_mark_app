@@ -86,7 +86,6 @@ class MyApp extends StatelessWidget {
           SignUpView.id: (context) => SignUpView(),
           ProductDetailsView.id: (context) => ProductDetailsView(),
           AboutView.id: (context) => AboutView(),
-          SearchView.id: (context) => SearchView(),
           SettingView.id: (context) => SettingView(),
           SplashView.id: (context) => SplashView(),
           FavouriteView.id: (context) => FavouriteView(),

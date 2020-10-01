@@ -12,7 +12,7 @@ class Search extends StatelessWidget {
         GestureDetector(
           onTap: () {
             Provider.of<ScanQRCode>(context, listen: false).changeVal(false);
-            Navigator.pushNamed(context, SearchView.id);
+            showSearch(context: context, delegate: SearchView());
           },
           child: Container(
             width: customWidth(context, 1),
