@@ -40,9 +40,6 @@ const String kFavouriteCollection = "Favourite Of User";
 //Cart Of User
 const String kOrderCollection = "Orders Collection";
 
-//List Of Products
-
-
 customHeight(context, heiNum) {
   return MediaQuery.of(context).size.height * heiNum;
 }

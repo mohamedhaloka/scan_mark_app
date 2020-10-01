@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
 import 'package:scan_mark_app/provider/scan_qrcode.dart';
-import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/bottom_tab/bottom_drawer.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
-import 'package:scan_mark_app/views/search/view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../const.dart';
 import 'cart/view.dart';
@@ -19,6 +17,8 @@ class BottomTabView extends StatefulWidget {
   @override
   _BottomTabViewState createState() => _BottomTabViewState();
 }
+
+
 
 class _BottomTabViewState extends State<BottomTabView> {
   final List<BottomIndicatorNavigationBarItem> items = [
@@ -65,9 +65,6 @@ class _BottomTabViewState extends State<BottomTabView> {
   }
 
   orderDone(context) {
-    Store().storeOrderOfUser(loggedInUser.uid,{
-
-    });
   }
 
   TextEditingController _outputController;
@@ -77,8 +74,8 @@ class _BottomTabViewState extends State<BottomTabView> {
     this._outputController.text = barcode;
     print("The Output" + _outputController.text);
     Provider.of<ScanQRCode>(context, listen: false).changeVal(true);
-    Navigator.pushNamed(context, SearchView.id,
-        arguments: _outputController.text);
+    // Navigator.pushNamed(context, SearchView.id,
+    //     arguments: _outputController.text);
   }
 
   @override

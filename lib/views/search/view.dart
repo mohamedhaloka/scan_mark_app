@@ -1,64 +1,44 @@
-import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:scan_mark_app/const.dart';
-import 'package:scan_mark_app/models/products.dart';
-import 'package:scan_mark_app/provider/scan_qrcode.dart';
+import 'package:scan_mark_app/views/bottom_tab/home/products_list.dart';
 import 'package:scan_mark_app/views/product_details/view.dart';
 
-// Future<List<Products>> search(String search) async {
-//   await Future.delayed(Duration(seconds: 2));
-//   return ;
-// }
-
-class SearchView extends StatelessWidget {
-  static String id = "Search View";
+class SearchView extends SearchDelegate {
   @override
-  Widget build(BuildContext context) {
-    var productId = ModalRoute.of(context).settings.arguments;
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              color: kPrimaryColor,
-              onPressed: () {
-                Navigator.pop(context);
-              }),
-          title: Text(
-            "Search".toUpperCase(),
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          actions: [
-            Visibility(
-              child: IconButton(
-                icon: Icon(Icons.priority_high),
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      child: CupertinoAlertDialog(
-                        title: Text("Product ID"),
-                        content: Text("$productId"),
-                        actions: [
-                          FlatButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text("OK"))
-                        ],
-                      ));
-                },
-                color: kPrimaryColor,
-              ),
-              visible: Provider.of<ScanQRCode>(context).scan ? true : false,
-            )
-          ],
-          backgroundColor: Colors.transparent,
-        ),
-        body: Container());
+  String query;
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement appBarTheme
+    return null;
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [IconButton(icon: Icon(Icons.clear), onPressed: () {})];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () {});
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final myList = query.isEmpty
+        ? productInfo
+        : productInfo.where((p) => p.productName.startsWith(query)).toList();
+    return ListView.builder(
+        itemCount: myList.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, ProductDetailsView.id,
+                  arguments: productInfo[index]);
+            },
+            title: Text("${myList[index].productName}"),
+            subtitle: Text("${myList[index].productID}"),
+          );
+        });
   }
 }
