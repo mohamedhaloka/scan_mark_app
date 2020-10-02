@@ -89,7 +89,7 @@ class _BottomTabViewState extends State<BottomTabView> {
     });
     var cartDone = Provider.of<CartItem>(context);
     Store().storeOrders({kUserName: name, kUserAddress: address},
-        Provider.of<CartItem>(context,listen: false).products);
+        Provider.of<CartItem>(context, listen: false).products);
   }
 
   @override
@@ -105,22 +105,22 @@ class _BottomTabViewState extends State<BottomTabView> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: kPrimaryColor,
-        // leading: GestureDetector(
-        //   onTap: () => _scaffold.currentState.openDrawer(),
-        //   child: Container(
-        //     margin: EdgeInsets.all(10),
-        //     width: 30,
-        //     height: 30,
-        //     decoration: BoxDecoration(
-        //         shape: BoxShape.circle,
-        //         color: kPrimaryColor,
-        //         image: DecorationImage(
-        //             image: NetworkImage(photo == null
-        //                 ? "https://thumbs.dreamstime.com/b/user-account-line-icon-outline-person-logo-illustration-linear-pictogram-isolated-white-90234649.jpg"
-        //                 : photo),
-        //             fit: BoxFit.cover)),
-        //   ),
-        // ),
+        leading: GestureDetector(
+          onTap: () => _scaffold.currentState.openDrawer(),
+          child: Container(
+            margin: EdgeInsets.all(10),
+            width: 30,
+            height: 30,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: kPrimaryColor,
+                image: DecorationImage(
+                    image: photo == null
+                        ? ExactAssetImage("assets/img/default-user.jpg")
+                        : NetworkImage(photo),
+                    fit: BoxFit.cover)),
+          ),
+        ),
         centerTitle: true,
         title: Image.asset(
           "assets/img/logo.png",

@@ -76,9 +76,10 @@ class BottomDrawer extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 color: kPrimaryColor,
                                 image: DecorationImage(
-                                    image: NetworkImage(photo == null
-                                        ? "https://thumbs.dreamstime.com/b/user-account-line-icon-outline-person-logo-illustration-linear-pictogram-isolated-white-90234649.jpg"
-                                        : photo),
+                                    image: photo == null
+                                        ? ExactAssetImage(
+                                            "assets/img/default-user.jpg")
+                                        : NetworkImage(photo),
                                     fit: BoxFit.cover)),
                           ),
                           CustomSizedBox(heiNum: 0.016, wedNum: 0.0),
