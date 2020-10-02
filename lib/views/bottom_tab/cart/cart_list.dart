@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
 import 'package:scan_mark_app/models/products.dart';
+import 'package:scan_mark_app/provider/order_done.dart';
 import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../const.dart';
 
@@ -42,9 +45,10 @@ class _CartListState extends State<CartList> {
         stream: Store().getCartOfUser(loggedInUser.uid),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<Products> productInfoInCart = [];
+            List<Products> products = Provider.of<CartItem>(context).products;
+            products.clear();
             for (var doc in snapshot.data.docs) {
-              productInfoInCart.add(Products(
+              products.add(Products(
                 productImage: doc.data()[kProductImage],
                 productName: doc.data()[kProductTittle],
                 productPrice: doc.data()[kProductPrice],
@@ -55,7 +59,7 @@ class _CartListState extends State<CartList> {
               ));
             }
             return LayoutBuilder(builder: (context, constrant) {
-              if (productInfoInCart.length == 0) {
+              if (products.length == 0) {
                 return Center(child: Image.asset("assets/img/empty-cart.png"));
               }
               return AnimationLimiter(
@@ -82,7 +86,7 @@ class _CartListState extends State<CartList> {
                         child: Column(
                           children: [
                             Text(
-                              "${productInfoInCart[index].productName}",
+                              "${products[index].productName}",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
@@ -93,7 +97,7 @@ class _CartListState extends State<CartList> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Image.network(
-                                  "${productInfoInCart[index].productImage}",
+                                  "${products[index].productImage}",
                                   width: 100,
                                 ),
                                 CustomSizedBox(heiNum: 0.0, wedNum: 0.04),
@@ -103,9 +107,9 @@ class _CartListState extends State<CartList> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       drawPriceDetails("Price",
-                                          "${productInfoInCart[index].productPrice}"),
+                                          "${products[index].productPrice}"),
                                       drawPriceDetails("Average Price",
-                                          "${productInfoInCart[index].productAveragePrice}"),
+                                          "${products[index].productAveragePrice}"),
                                     ],
                                   ),
                                 )
@@ -117,7 +121,7 @@ class _CartListState extends State<CartList> {
                               children: [
                                 drawButtonOptions(Icons.delete, () {
                                   Store().deleteCartOfUserInfo(loggedInUser.uid,
-                                      productInfoInCart[index].productDocumentID);
+                                      products[index].productDocumentID);
                                   setState(() {});
                                   Scaffold.of(context).showSnackBar(SnackBar(
                                       content: Text("Delete Successfuly")));
@@ -129,7 +133,7 @@ class _CartListState extends State<CartList> {
                       ),
                     ),
                   ),
-                  itemCount: productInfoInCart.length,
+                  itemCount: products.length,
                 ),
               );
             });
@@ -171,4 +175,5 @@ class _CartListState extends State<CartList> {
       ],
     );
   }
+
 }

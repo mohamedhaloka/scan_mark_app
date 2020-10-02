@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/models/products.dart';
+import 'package:scan_mark_app/provider/order_done.dart';
 import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/bottom_tab/home/product_card.dart';
 
 class ProductsList extends StatefulWidget {
   @override
-  _ProductsListState createState() => _ProductsListState();
+  ProductsListState createState() => ProductsListState();
 }
 
 List<Products> productInfo = [];
 
-class _ProductsListState extends State<ProductsList> {
+class ProductsListState extends State<ProductsList> {
   bool loading = true;
   getProducts() async {
+    productInfo.clear();
     await for (var snapshot in Store().getProducts()) {
       var data = snapshot.docs;
       for (var doc in data) {

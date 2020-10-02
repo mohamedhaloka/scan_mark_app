@@ -85,7 +85,9 @@ class _ProfilePhotoState extends State<ProfilePhoto> {
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           image: DecorationImage(
-              image: NetworkImage(widget.photo == null ? "" : widget.photo),
+              image: NetworkImage(widget.photo == null
+                  ? "https://oc.ocstatic.com/images/favicon/android-chrome-512x512.png"
+                  : widget.photo),
               fit: BoxFit.cover)),
       child: Align(
         alignment: Alignment.bottomRight,

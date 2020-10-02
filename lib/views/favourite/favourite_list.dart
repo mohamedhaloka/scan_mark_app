@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:scan_mark_app/models/products.dart';
 import 'package:scan_mark_app/services/store.dart';
-import 'package:scan_mark_app/views/product_details/view.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

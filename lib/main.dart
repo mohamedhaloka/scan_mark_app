@@ -5,16 +5,15 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
+import 'package:scan_mark_app/provider/order_done.dart';
 import 'package:scan_mark_app/provider/progress_statue.dart';
 import 'package:scan_mark_app/provider/scan_qrcode.dart';
 import 'package:scan_mark_app/provider/userData.dart';
 import 'package:scan_mark_app/views/about/view.dart';
-import 'package:scan_mark_app/views/bottom_tab/home/scan_qr.dart';
 import 'package:scan_mark_app/views/bottom_tab/view.dart';
 import 'package:scan_mark_app/views/favourite/view.dart';
 import 'package:scan_mark_app/views/onboarding/view.dart';
 import 'package:scan_mark_app/views/product_details/view.dart';
-import 'package:scan_mark_app/views/search/view.dart';
 import 'package:scan_mark_app/views/setting/view.dart';
 import 'package:scan_mark_app/views/sign_in/view.dart';
 import 'package:scan_mark_app/views/sign_up/view.dart';
@@ -70,6 +69,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ChangeIndex()),
         ChangeNotifierProvider(create: (context) => ProgressStatue()),
         ChangeNotifierProvider(create: (context) => ScanQRCode()),
+        ChangeNotifierProvider(create: (context) => CartItem()),
       ],
       child: MaterialApp(
         title: 'Scan Market',

@@ -1,8 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 
-import 'models/products.dart';
-
 const kPrimaryColor = Color(0xff0E0E0E);
 
 //User Collection
@@ -39,6 +37,7 @@ const String kFavouriteCollection = "Favourite Of User";
 
 //Cart Of User
 const String kOrderCollection = "Orders Collection";
+const String kOrderDetails = "Orders Details";
 
 customHeight(context, heiNum) {
   return MediaQuery.of(context).size.height * heiNum;

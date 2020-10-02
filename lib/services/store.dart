@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scan_mark_app/const.dart';
+import 'package:scan_mark_app/models/products.dart';
 
 class Store {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -7,7 +8,6 @@ class Store {
   storeUserInfo(data, id) async {
     await firebaseFirestore.collection(kUserCollection).doc(id).set(data);
   }
-
 
   storeCartOfUserInfo(data, id) async {
     await firebaseFirestore
@@ -18,13 +18,15 @@ class Store {
         .set(data);
   }
 
-  storeOrderOfUser(data, id) async {
-    await firebaseFirestore
-        .collection(kUserCollection)
-        .doc(id)
-        .collection(kOrderCollection)
-        .doc()
-        .set(data);
+  storeOrders(data, List<Products> products) {
+    var documentRef = firebaseFirestore.collection(kOrderCollection).document();
+    documentRef.set(data);
+    for (var product in products) {
+      documentRef.collection(kOrderDetails).doc().set({
+        kProductTittle: product.productName,
+        kProductPrice: product.productPrice,
+      });
+    }
   }
 
   storeFavouriteOfUser(data, id) async {

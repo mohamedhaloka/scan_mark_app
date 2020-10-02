@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
+import 'package:scan_mark_app/provider/order_done.dart';
 import 'package:scan_mark_app/provider/scan_qrcode.dart';
+import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/bottom_tab/bottom_drawer.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:scan_mark_app/views/search/view.dart';
@@ -33,7 +35,8 @@ class _BottomTabViewState extends State<BottomTabView> {
       name = preferences.getString("username") ?? "No User";
       photo = preferences.getString("userphoto");
       address = preferences.getString("useraddress");
-      phone = preferences.getString("userphone");
+      phone = preferences.getString("userphone") ??
+          "https://thumbs.dreamstime.com/b/user-account-line-icon-outline-person-logo-illustration-linear-pictogram-isolated-white-90234649.jpg";
     });
   }
 
@@ -63,8 +66,6 @@ class _BottomTabViewState extends State<BottomTabView> {
     }
   }
 
-  orderDone(context) {}
-
   TextEditingController _outputController;
 
   Future _scan(context) async {
@@ -72,7 +73,23 @@ class _BottomTabViewState extends State<BottomTabView> {
     this._outputController.text = barcode;
     print("The Output" + _outputController.text);
     Provider.of<ScanQRCode>(context, listen: false).changeVal(true);
-    showSearch(context: context, delegate: SearchView());
+    showSearch(
+        context: context,
+        delegate: SearchView(productID: _outputController.text));
+  }
+
+  orderDone(
+    context,
+  ) async {
+    String name, address;
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      name = sharedPreferences.getString("username");
+      address = sharedPreferences.getString("useraddress");
+    });
+    var cartDone = Provider.of<CartItem>(context);
+    Store().storeOrders({kUserName: name, kUserAddress: address},
+        Provider.of<CartItem>(context,listen: false).products);
   }
 
   @override
@@ -88,22 +105,22 @@ class _BottomTabViewState extends State<BottomTabView> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: kPrimaryColor,
-        leading: GestureDetector(
-          onTap: () => _scaffold.currentState.openDrawer(),
-          child: Container(
-            margin: EdgeInsets.all(10),
-            width: 30,
-            height: 30,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: kPrimaryColor,
-                image: DecorationImage(
-                    image: NetworkImage(photo == null
-                        ? "https://thumbs.dreamstime.com/b/user-account-line-icon-outline-person-logo-illustration-linear-pictogram-isolated-white-90234649.jpg"
-                        : photo),
-                    fit: BoxFit.cover)),
-          ),
-        ),
+        // leading: GestureDetector(
+        //   onTap: () => _scaffold.currentState.openDrawer(),
+        //   child: Container(
+        //     margin: EdgeInsets.all(10),
+        //     width: 30,
+        //     height: 30,
+        //     decoration: BoxDecoration(
+        //         shape: BoxShape.circle,
+        //         color: kPrimaryColor,
+        //         image: DecorationImage(
+        //             image: NetworkImage(photo == null
+        //                 ? "https://thumbs.dreamstime.com/b/user-account-line-icon-outline-person-logo-illustration-linear-pictogram-isolated-white-90234649.jpg"
+        //                 : photo),
+        //             fit: BoxFit.cover)),
+        //   ),
+        // ),
         centerTitle: true,
         title: Image.asset(
           "assets/img/logo.png",

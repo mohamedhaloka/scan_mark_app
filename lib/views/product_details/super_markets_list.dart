@@ -46,72 +46,79 @@ class _SuperMarketsListState extends State<SuperMarketsList> {
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : ListView.builder(
-            itemBuilder: (context, index) {
-              return Container(
-                width: customWidth(context, 1),
-                height: customHeight(context, 0.14),
-                margin: EdgeInsets.all(12),
-                padding: EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.white,
-                    border: Border.all(width: 1, color: Colors.grey[300])),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.network(
-                      "${marketsInfo[index].marketImg}",
-                      width: 90,
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "${marketsInfo[index].name}",
-                                style: TextStyle(
-                                    color: kPrimaryColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    "Price",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 11),
-                                  ),
-                                  CustomSizedBox(heiNum: 0.0, wedNum: 0.02),
-                                  Text(
-                                    "${marketsInfo[index].marketPrice}EGP",
-                                    style: TextStyle(
-                                        color: kPrimaryColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                "${marketsInfo[index].distance}",
-                                style: TextStyle(
-                                    color: Colors.grey,),
-                              ),
-                            ],
-                          ),
-                        ],
+        : LayoutBuilder(builder: (context, constrant) {
+            if (marketsInfo.length == 0) {
+              return Center(child: Image.asset("assets/img/empty-cart.png"));
+            }
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                return Container(
+                  width: customWidth(context, 1),
+                  height: customHeight(context, 0.14),
+                  margin: EdgeInsets.all(12),
+                  padding: EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white,
+                      border: Border.all(width: 1, color: Colors.grey[300])),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.network(
+                        "${marketsInfo[index].marketImg}",
+                        width: 90,
                       ),
-                    )
-                  ],
-                ),
-              );
-            },
-            itemCount: marketsInfo.length,
-          );
+                      CustomSizedBox(heiNum: 0.0, wedNum: 0.01),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "${marketsInfo[index].name}",
+                                  style: TextStyle(
+                                      color: kPrimaryColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Price",
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 11),
+                                    ),
+                                    CustomSizedBox(heiNum: 0.0, wedNum: 0.02),
+                                    Text(
+                                      "${marketsInfo[index].marketPrice}EGP",
+                                      style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "${marketsInfo[index].distance}",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+              itemCount: marketsInfo.length,
+            );
+          });
   }
 }

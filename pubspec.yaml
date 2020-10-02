@@ -71,6 +71,7 @@ flutter:
     - assets/img/home/drawer/
     - assets/img/sign-in/
     - assets/img/splash/
+    - assets/img/onboarding/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
