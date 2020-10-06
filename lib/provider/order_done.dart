@@ -8,4 +8,13 @@ class CartItem extends ChangeNotifier {
     products.add(product);
   }
 
+
+  inCart(List<Products> product)
+  {
+    for(var product in products)
+      {
+        return true;
+      }
+  }
+
 }

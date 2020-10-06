@@ -156,7 +156,7 @@ class _ProductCardState extends State<ProductCard> {
     return GestureDetector(
       onTap: onPress,
       child: Container(
-        padding: EdgeInsets.all(4),
+        padding: EdgeInsets.all(2),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(color: Colors.grey[300]),
@@ -172,12 +172,12 @@ class _ProductCardState extends State<ProductCard> {
       children: [
         Text(
           tittle,
-          style: TextStyle(color: Colors.grey, fontSize: 13),
+          style: TextStyle(color: Colors.grey, fontSize: 11),
         ),
         Text(
           "$price EGP",
           style: TextStyle(
-              fontSize: 13, fontWeight: FontWeight.bold, color: kPrimaryColor),
+              fontSize: 12, fontWeight: FontWeight.bold, color: kPrimaryColor),
         ),
       ],
     );

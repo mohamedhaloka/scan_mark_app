@@ -80,7 +80,7 @@ class _SearchViewState extends State<SearchView> {
                           title: Text(
                             '${productInfo[index].productName}',
                           ),
-                          subtitle: Text('${productInfo[index].productID}'),
+                          subtitle: Text('Id ${productInfo[index].productID}'),
                           leading: new CircleAvatar(
                             backgroundImage:
                                 NetworkImage(productInfo[index].productImage),
@@ -88,14 +88,14 @@ class _SearchViewState extends State<SearchView> {
                           ),
                           onTap: () => _onTapItem(context, productInfo[index]),
                         )
-                      : '${productInfo[index].productID}'
+                      : '${productInfo[index].productName}'
                               .toLowerCase()
                               .contains(filter.toLowerCase())
                           ? ListTile(
                               title: Text(
                                 '${productInfo[index].productName}',
                               ),
-                              subtitle: Text('${productInfo[index].productID}'),
+                              subtitle: Text('Id ${productInfo[index].productID}'),
                               leading: new CircleAvatar(
                                 backgroundImage: NetworkImage(
                                     productInfo[index].productImage),
