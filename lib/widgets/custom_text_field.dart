@@ -11,6 +11,7 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
+  bool obscureText = false;
   errorMessage(hint) {
     switch (hint) {
       case "Name":
@@ -25,6 +26,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: obscureText,
       cursorColor: kPrimaryColor,
       // ignore: missing_return
       validator: (val) {
@@ -32,11 +34,23 @@ class _CustomTextFieldState extends State<CustomTextField> {
           return errorMessage(widget.hint);
         }
       },
-      keyboardType: widget.hint=="Phone Number"?TextInputType.phone:TextInputType.name,
+      keyboardType: widget.hint == "Phone Number"
+          ? TextInputType.phone
+          : TextInputType.name,
       style: TextStyle(fontSize: 14),
       textAlign: TextAlign.center,
       onChanged: widget.onChange,
       decoration: InputDecoration(
+          prefixIcon: widget.hint == "Password"
+              ? IconButton(
+                  icon: Icon(
+                      obscureText ? Icons.visibility : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      obscureText = !obscureText;
+                    });
+                  })
+              : null,
           filled: true,
           focusColor: Colors.grey,
           hintText: widget.hint,

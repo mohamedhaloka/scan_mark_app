@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/models/products.dart';
+import 'package:scan_mark_app/provider/order_done.dart';
 import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/product_details/view.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
@@ -112,6 +114,7 @@ class _ProductCardState extends State<ProductCard> {
                           "Fav ${widget.productInfo.productName} Successfully")));
                 }),
                 drawButtonOptions(Icons.add, () async {
+                  addToCart(context, widget.productInfo);
                   String name, email, phone, address;
                   SharedPreferences sharedpreferences =
                       await SharedPreferences.getInstance();
@@ -178,5 +181,10 @@ class _ProductCardState extends State<ProductCard> {
         ),
       ],
     );
+  }
+
+  void addToCart(context, Products product) {
+    CartItem cartItem = Provider.of<CartItem>(context, listen: false);
+    cartItem.addProduct(product);
   }
 }

@@ -45,6 +45,7 @@ dependencies:
   easy_alert: ^0.0.8
   url_launcher: ^5.7.2
   cached_network_image:
+  cool_alert:
   dio:
   http:
 

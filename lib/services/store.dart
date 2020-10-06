@@ -19,7 +19,7 @@ class Store {
   }
 
   storeOrders(data, List<Products> products) {
-    var documentRef = firebaseFirestore.collection(kOrderCollection).document();
+    var documentRef = firebaseFirestore.collection(kOrderCollection).doc();
     documentRef.set(data);
     for (var product in products) {
       documentRef.collection(kOrderDetails).doc().set({

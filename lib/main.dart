@@ -76,6 +76,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             platform: TargetPlatform.iOS,
+            primaryColor: kPrimaryColor,
             visualDensity: VisualDensity.adaptivePlatformDensity,
             accentColor: kPrimaryColor,
             fontFamily: "Cairo"),

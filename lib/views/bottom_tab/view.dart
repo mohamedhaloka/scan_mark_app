@@ -1,4 +1,5 @@
 import 'package:bottom_indicator_bar/bottom_indicator_bar.dart';
+import 'package:easy_alert/easy_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -73,28 +74,37 @@ class _BottomTabViewState extends State<BottomTabView> {
     this._outputController.text = barcode;
     print("The Output" + _outputController.text);
     Provider.of<ScanQRCode>(context, listen: false).changeVal(true);
-    showSearch(
-        context: context,
-        delegate: SearchView(productID: _outputController.text));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SearchView(
+                  searchController: _outputController,
+                )));
   }
 
   orderDone(
     context,
   ) async {
+    var card = Provider.of<CartItem>(context, listen: false);
     String name, address;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       name = sharedPreferences.getString("username");
       address = sharedPreferences.getString("useraddress");
     });
-    var cartDone = Provider.of<CartItem>(context);
-    Store().storeOrders({kUserName: name, kUserAddress: address},
-        Provider.of<CartItem>(context, listen: false).products);
+    Store().storeOrders(
+        {kUserName: name, kUserAddress: address, 'Time Send': DateTime.now()},
+        card.products);
+
+    Alert.toast(context,
+        "ٍYour order has been successfully sent, we will contact you within 24 hours",
+        position: ToastPosition.bottom, duration: ToastDuration.long);
   }
 
   @override
   Widget build(BuildContext context) {
     var checkIndex = Provider.of<ChangeIndex>(context).initialIndex;
+
     getUserData();
     return Scaffold(
       key: _scaffold,

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/provider/scan_qrcode.dart';
+import 'package:scan_mark_app/views/favourite/view.dart';
 import 'package:scan_mark_app/views/search/view.dart';
+import 'package:scan_mark_app/views/setting/view.dart';
 
 class Search extends StatelessWidget {
   @override
@@ -12,7 +14,11 @@ class Search extends StatelessWidget {
         GestureDetector(
           onTap: () {
             Provider.of<ScanQRCode>(context, listen: false).changeVal(false);
-            showSearch(context: context, delegate: SearchView());
+            TextEditingController textSuggestion = TextEditingController();
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => SearchView(
+                      searchController: textSuggestion,
+                    )));
           },
           child: Container(
             width: customWidth(context, 1),
