@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/provider/bottom_navigation_index.dart';
+import 'package:scan_mark_app/provider/favourite_item.dart';
 import 'package:scan_mark_app/provider/order_done.dart';
 import 'package:scan_mark_app/provider/progress_statue.dart';
 import 'package:scan_mark_app/provider/scan_qrcode.dart';
@@ -70,6 +71,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ProgressStatue()),
         ChangeNotifierProvider(create: (context) => ScanQRCode()),
         ChangeNotifierProvider(create: (context) => CartItem()),
+        ChangeNotifierProvider(create: (context) => FavouriteItem()),
       ],
       child: MaterialApp(
         title: 'Scan Market',

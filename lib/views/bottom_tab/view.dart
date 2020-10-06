@@ -92,13 +92,18 @@ class _BottomTabViewState extends State<BottomTabView> {
       name = sharedPreferences.getString("username");
       address = sharedPreferences.getString("useraddress");
     });
-    Store().storeOrders(
-        {kUserName: name, kUserAddress: address, 'Time Send': DateTime.now()},
-        card.products);
+    if (card.products.length == 0) {
+      Alert.toast(context, "Your cart is empty",
+          position: ToastPosition.bottom, duration: ToastDuration.long);
+    } else {
+      Store().storeOrders(
+          {kUserName: name, kUserAddress: address, 'Time Send': DateTime.now()},
+          card.products);
 
-    Alert.toast(context,
-        "ٍYour order has been successfully sent, we will contact you within 24 hours",
-        position: ToastPosition.bottom, duration: ToastDuration.long);
+      Alert.toast(context,
+          "Your order has been successfully sent, we will contact you within 24 hours",
+          position: ToastPosition.bottom, duration: ToastDuration.long);
+    }
   }
 
   @override

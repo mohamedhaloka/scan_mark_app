@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
 import 'package:scan_mark_app/models/products.dart';
+import 'package:scan_mark_app/provider/favourite_item.dart';
 import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -41,9 +43,11 @@ class _FavouriteListState extends State<FavouriteList> {
         stream: Store().getFavouriteOfUser(loggedInUser.uid),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<Products> productInfo = [];
+            List<Products> products =
+                Provider.of<FavouriteItem>(context).favouriteProduct;
+            products.clear();
             for (var doc in snapshot.data.docs) {
-              productInfo.add(Products(
+              products.add(Products(
                 productImage: doc.data()[kProductImage],
                 productName: doc.data()[kProductTittle],
                 productPrice: doc.data()[kProductPrice],
@@ -54,7 +58,7 @@ class _FavouriteListState extends State<FavouriteList> {
               ));
             }
             return LayoutBuilder(builder: (context, constrant) {
-              if (productInfo.length == 0) {
+              if (products.length == 0) {
                 return Center(
                     child: Image.asset("assets/img/empty-favourite.png"));
               }
@@ -84,7 +88,7 @@ class _FavouriteListState extends State<FavouriteList> {
                           child: Column(
                             children: [
                               Text(
-                                "${productInfo[index].productName}",
+                                "${products[index].productName}",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16),
@@ -96,7 +100,7 @@ class _FavouriteListState extends State<FavouriteList> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Image.network(
-                                    "${productInfo[index].productImage}",
+                                    "${products[index].productImage}",
                                     width: 100,
                                   ),
                                   CustomSizedBox(heiNum: 0.0, wedNum: 0.04),
@@ -106,9 +110,9 @@ class _FavouriteListState extends State<FavouriteList> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         drawPriceDetails("Price",
-                                            "${productInfo[index].productPrice}"),
+                                            "${products[index].productPrice}"),
                                         drawPriceDetails("Average Price",
-                                            "${productInfo[index].productAveragePrice}"),
+                                            "${products[index].productAveragePrice}"),
                                       ],
                                     ),
                                   )
@@ -121,7 +125,7 @@ class _FavouriteListState extends State<FavouriteList> {
                                   drawButtonOptions(Icons.delete, () {
                                     Store().deleteFavouriteOfUserInfo(
                                         loggedInUser.uid,
-                                        productInfo[index].productDocumentID);
+                                        products[index].productDocumentID);
                                     setState(() {});
                                     Scaffold.of(context).showSnackBar(SnackBar(
                                         content: Text("Delete Successfuly")));
@@ -134,7 +138,7 @@ class _FavouriteListState extends State<FavouriteList> {
                       ),
                     ),
                   ),
-                  itemCount: productInfo.length,
+                  itemCount: products.length,
                 ),
               );
             });

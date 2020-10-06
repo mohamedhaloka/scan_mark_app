@@ -8,13 +8,12 @@ class CartItem extends ChangeNotifier {
     products.add(product);
   }
 
-
-  inCart(List<Products> product)
-  {
-    for(var product in products)
-      {
+  inCart(Products productsList) {
+    for (var product in products) {
+      if (product.productName == productsList.productName) {
         return true;
       }
+    }
+    return false;
   }
-
 }

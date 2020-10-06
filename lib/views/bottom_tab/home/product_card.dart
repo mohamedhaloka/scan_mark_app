@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/models/products.dart';
+import 'package:scan_mark_app/provider/favourite_item.dart';
 import 'package:scan_mark_app/provider/order_done.dart';
 import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/product_details/view.dart';
@@ -43,6 +44,8 @@ class _ProductCardState extends State<ProductCard> {
 
   @override
   Widget build(BuildContext context) {
+    var cartItem = Provider.of<CartItem>(context);
+    var favouriteItem = Provider.of<FavouriteItem>(context);
     return Container(
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(18),
@@ -83,7 +86,11 @@ class _ProductCardState extends State<ProductCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                drawButtonOptions(Icons.favorite, () async {
+                drawButtonOptions(
+                    favouriteItem.inFavourite(widget.productInfo)
+                        ? Icons.favorite
+                        : Icons.favorite_border, () async {
+                  addInFavourite(context, widget.productInfo);
                   String name, email, phone, address;
                   SharedPreferences sharedpreferences =
                       await SharedPreferences.getInstance();
@@ -113,7 +120,10 @@ class _ProductCardState extends State<ProductCard> {
                       content: Text(
                           "Fav ${widget.productInfo.productName} Successfully")));
                 }),
-                drawButtonOptions(Icons.add, () async {
+                drawButtonOptions(
+                    cartItem.inCart(widget.productInfo)
+                        ? Icons.add_circle
+                        : Icons.add, () async {
                   addToCart(context, widget.productInfo);
                   String name, email, phone, address;
                   SharedPreferences sharedpreferences =
@@ -186,5 +196,11 @@ class _ProductCardState extends State<ProductCard> {
   void addToCart(context, Products product) {
     CartItem cartItem = Provider.of<CartItem>(context, listen: false);
     cartItem.addProduct(product);
+  }
+
+  addInFavourite(context, Products products) {
+    FavouriteItem favouriteList =
+        Provider.of<FavouriteItem>(context, listen: false);
+    favouriteList.addFavouriteProduct(products);
   }
 }
