@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scan_mark_app/const.dart';
 import 'package:scan_mark_app/models/products.dart';
+import 'package:scan_mark_app/provider/favourite_item.dart';
+import 'package:scan_mark_app/provider/order_done.dart';
 import 'package:scan_mark_app/services/store.dart';
 import 'package:scan_mark_app/views/product_details/super_markets_list.dart';
 import 'package:scan_mark_app/widgets/custom_sized_box.dart';
@@ -41,6 +44,8 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   @override
   Widget build(BuildContext context) {
+    var cartItem = Provider.of<CartItem>(context);
+    var favouriteItem = Provider.of<FavouriteItem>(context);
     return Container(
       margin: EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -88,7 +93,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                 CustomSizedBox(heiNum: 0.02, wedNum: 0.0),
                 Row(
                   children: [
-                    drawButtonOptions(Icons.favorite, () async {
+                    drawButtonOptions(
+                        favouriteItem.inFavourite(widget.productInfo)
+                            ? Icons.favorite
+                            : Icons.favorite_border, () async {
+                      addInFavourite(context, widget.productInfo);
                       String name, email, phone, address;
                       SharedPreferences sharedpreferences =
                           await SharedPreferences.getInstance();
@@ -123,7 +132,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                               "Add ${widget.productInfo.productName} Successfully")));
                     }),
                     CustomSizedBox(heiNum: 0.0, wedNum: 0.05),
-                    drawButtonOptions(Icons.add, () async {
+                    drawButtonOptions(
+                        cartItem.inCart(widget.productInfo)
+                            ? Icons.add_circle
+                            : Icons.add, () async {
+                      addToCart(context, widget.productInfo);
                       String name, email, phone, address;
                       SharedPreferences sharedpreferences =
                           await SharedPreferences.getInstance();
@@ -219,5 +232,16 @@ class _ProductDetailsState extends State<ProductDetails> {
         child: Icon(icon),
       ),
     );
+  }
+
+  void addToCart(context, Products product) {
+    CartItem cartItem = Provider.of<CartItem>(context, listen: false);
+    cartItem.addProduct(product);
+  }
+
+  addInFavourite(context, Products products) {
+    FavouriteItem favouriteList =
+        Provider.of<FavouriteItem>(context, listen: false);
+    favouriteList.addFavouriteProduct(products);
   }
 }
