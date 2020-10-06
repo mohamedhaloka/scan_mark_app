@@ -116,6 +116,3 @@ class _SearchViewState extends State<SearchView> {
     Navigator.pushNamed(context, ProductDetailsView.id, arguments: post);
   }
 }
-
-/*
-*   */
