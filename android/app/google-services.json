@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1034536225240:android:f8cd9266acd4e6591e4aad",
+        "mobilesdk_app_id": "1:1034536225240:android:8f42e78052486c681e4aad",
         "android_client_info": {
-          "package_name": "com.scanmark.scan_mark_app"
+          "package_name": "com.scanmarket.app"
         }
       },
       "oauth_client": [
