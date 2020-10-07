@@ -1,4 +1,4 @@
-package com.scanmark.scan_mark_app
+package com.scanmark.app
 
 import io.flutter.embedding.android.FlutterActivity
 
